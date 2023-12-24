@@ -1,19 +1,28 @@
 const canvas = document.getElementById('canvas')
-const canvas2 = document.getElementById('canvas2')
 /** @type {CanvasRenderingContext2D} */
 canvas.width = 400
 canvas.height = 400
-canvas2.width = 400
-canvas2.height = 400
 const ctx = canvas.getContext('2d')
-const ctx2 = canvas2.getContext('2d')
-let possibleCoordinates = []
 let coins = []
 let score = 0
-let key
 
-for (let index = 0; index < canvas2.width; index += 20) {
-  possibleCoordinates.push(index)
+class InputHandler {
+  constructor() {
+    this.keys = []
+    window.addEventListener('keydown', (e) => {
+      if (
+        (e.key === 'a' || e.key === 'd' || e.key === ' ') &&
+        this.keys.indexOf(e.key) === -1
+      ) {
+        this.keys.push(e.key)
+      }
+    })
+    window.addEventListener('keyup', (e) => {
+      if (e.key === 'a' || e.key === 'd' || e.key === ' ') {
+        this.keys.splice(this.keys.indexOf(e.key), 1)
+      }
+    })
+  }
 }
 
 function getRandomArbitrary(min, max) {
@@ -30,26 +39,42 @@ class Player {
   constructor(x, y) {
     this.x = x
     this.y = y
-    this.width = 20
-    this.height = 20
-    this.xspeed = 20
-    this.yspeed = 20
+    this.width = 25
+    this.height = 25
+    this.vx = 0
+    this.vy = 0
+    this.weight = 1
   }
-  update(key, coins) {
-    if (key === 'd') {
-      this.x += this.xspeed
-    } else if (key === 'a') {
-      this.x -= this.xspeed
-    } else if (key === 'w') {
-      this.y -= this.yspeed
-    } else if (key === 's') {
-      this.y += this.yspeed
+  update(coins, input) {
+    if (input.keys.indexOf('a') !== -1) {
+      this.vx = -10
+    } else if (input.keys.indexOf('d') !== -1) {
+      this.vx = 10
+    } else {
+      this.vx = 0
+    }
+
+    if (
+      input.keys.indexOf(' ') !== -1 &&
+      this.y == canvas.height - this.height
+    ) {
+      this.vy = -27
+    }
+
+    this.x += this.vx
+    this.y += this.vy
+
+    if (!(this.y == canvas.height - this.height)) {
+      this.vy += this.weight
     }
 
     coins.forEach((coin) => {
-      if (coin.x === this.x && coin.y === this.y) {
+      const dx = coin.x - this.x
+      const dy = coin.y - this.y
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      if (distance < this.width / 2 + coin.width / 2) {
         coin.markedForDeletion = true
-        coin.x = -1
+        coin.x = -100
         score++
         return
       }
@@ -81,8 +106,8 @@ class Coin {
     this.width = 20
     this.height = 20
     this.deltaTime = deltaTime
-    this.x = this.calculateCoordinate()
-    this.y = this.calculateCoordinate()
+    this.x = getRandomArbitrary(0, canvas.width - this.width)
+    this.y = getRandomArbitrary(0, canvas.height - this.height)
     this.duration = 10000
     this.markedForDeletion = false
   }
@@ -98,18 +123,10 @@ class Coin {
       ctx.fillRect(this.x, this.y, this.width, this.width)
     }
   }
-  calculateCoordinate() {
-    return possibleCoordinates[
-      getRandomArbitrary(0, possibleCoordinates.length)
-    ]
-  }
 }
 
-const player1 = new Player(0, 0)
-
-window.addEventListener('keydown', (e) => {
-  player1.update(e.key, coins)
-})
+const player1 = new Player(0, canvas.height)
+const input = new InputHandler()
 
 const coinIntervall = 5000
 let coinTimer = 0
@@ -118,12 +135,13 @@ let lastTime = 0
 coins.push(new Coin(16))
 
 function animate(timeStamp) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+
   const deltaTime = timeStamp - lastTime
   lastTime = timeStamp
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
   displayText()
-  player1.update(key, coins)
+  player1.update(coins, input)
   player1.draw()
 
   coinTimer += 1
