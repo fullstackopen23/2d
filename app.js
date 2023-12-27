@@ -1,8 +1,8 @@
 const canvas = document.getElementById('canvas')
 /** @type {CanvasRenderingContext2D} */
+const ctx = canvas.getContext('2d')
 canvas.width = 400
 canvas.height = 400
-const ctx = canvas.getContext('2d')
 let coins = []
 let score = 0
 
@@ -25,114 +25,112 @@ class InputHandler {
   }
 }
 
-function getRandomArbitrary(min, max) {
-  return Math.floor(Math.random() * (max - min) + min)
-}
-
-function displayText() {
-  ctx.fillStyle = 'black'
-  ctx.font = '25px Helvetica'
-  ctx.fillText('Score: ' + score, 20, 40)
-}
-
 class Player {
-  constructor(x, y) {
-    this.x = x
-    this.y = y
-    this.width = 25
-    this.height = 25
+  constructor() {
+    this.frameX = 0
+    this.frameY = 0
+    this.height = 40
+    this.width = 20
+    this.x = 0
+    this.y = canvas.height - this.height
     this.vx = 0
     this.vy = 0
     this.weight = 1
   }
-  update(coins, input) {
-    if (input.keys.indexOf('a') !== -1) {
-      this.vx = -10
-    } else if (input.keys.indexOf('d') !== -1) {
+
+  #move() {
+    //horizontal
+
+    if (input.keys.indexOf('d') !== -1) {
       this.vx = 10
+    } else if (input.keys.indexOf('a') !== -1) {
+      this.vx = -10
     } else {
       this.vx = 0
     }
 
-    if (
-      input.keys.indexOf(' ') !== -1 &&
-      this.y == canvas.height - this.height
-    ) {
-      this.vy = -27
-    }
-
-    this.x += this.vx
-    this.y += this.vy
-
-    if (!(this.y == canvas.height - this.height)) {
-      this.vy += this.weight
-    }
-
-    coins.forEach((coin) => {
-      const dx = coin.x - this.x
-      const dy = coin.y - this.y
-      const distance = Math.sqrt(dx * dx + dy * dy)
-      if (distance < this.width / 2 + coin.width / 2) {
-        coin.markedForDeletion = true
-        coin.x = -100
-        score++
-        return
-      }
-    })
-
-    // horizontal border
-    if (this.x > canvas.width - this.width) {
-      this.x = canvas.width - this.width
-    } else if (this.x < 0) {
+    if (this.x + this.vx <= 0) {
       this.x = 0
+    } else if (this.x + this.vx > canvas.width - this.width) {
+      this.x = canvas.width - this.width
+    } else {
+      this.x += this.vx
     }
 
-    //vertical border
-    if (this.y < 0) {
+    //verical
+    if (input.keys.indexOf(' ') !== -1 && this.#onGround()) {
+      this.vy -= 27
+    }
+    this.y += this.vy
+    if (!this.#onGround()) this.vy += this.weight
+    else this.vy = 0
+
+    if (this.y <= 0) {
       this.y = 0
-    } else if (this.y > canvas.height - this.height) {
+    } else if (this.y >= canvas.height - this.height) {
       this.y = canvas.height - this.height
     }
   }
-  draw() {
+
+  update(input) {
+    this.#move(input)
+  }
+  render() {
     ctx.fillStyle = 'black'
     ctx.fillRect(this.x, this.y, this.width, this.height)
   }
-  render() {}
+
+  #onGround() {
+    return this.y >= canvas.height - this.height
+  }
 }
 
 class Coin {
-  constructor(deltaTime) {
+  constructor() {
     this.width = 20
     this.height = 20
-    this.deltaTime = deltaTime
-    this.x = getRandomArbitrary(0, canvas.width - this.width)
-    this.y = getRandomArbitrary(0, canvas.height - this.height)
-    this.duration = 10000
+    this.x = Math.random() * (canvas.width * 0.9)
+    this.y = Math.random() * (canvas.height * 0.9)
     this.markedForDeletion = false
+    this.timer = 0
   }
-  update() {
-    this.duration = this.duration - this.deltaTime
-    if (this.duration < 0) {
+  update(player) {
+    if (
+      this.x >= player.x + this.width ||
+      this.x + this.width < player.x ||
+      this.y > player.y + this.height ||
+      this.y + this.height < player.y
+    ) {
+    } else {
+      // got hit by player
       this.markedForDeletion = true
+      score++
+      addCoin()
     }
   }
-  draw() {
-    if (!this.markedForDeletion) {
-      ctx.fillStyle = 'yellow'
-      ctx.fillRect(this.x, this.y, this.width, this.width)
-    }
+  render() {
+    ctx.fillStyle = 'yellow'
+    ctx.fillRect(this.x, this.y, this.width, this.height)
   }
 }
 
-const player1 = new Player(0, canvas.height)
-const input = new InputHandler()
+class displayText {
+  constructor() {}
+  renderScore() {
+    ctx.font = '30px sans-serif'
+    ctx.fillText('Score: ' + score, 10, 40)
+  }
+}
 
-const coinIntervall = 5000
-let coinTimer = 0
+const player1 = new Player()
+const input = new InputHandler()
+const text = new displayText()
 let lastTime = 0
 
-coins.push(new Coin(16))
+function addCoin() {
+  coins.push(new Coin())
+}
+addCoin()
 
 function animate(timeStamp) {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -140,26 +138,15 @@ function animate(timeStamp) {
   const deltaTime = timeStamp - lastTime
   lastTime = timeStamp
 
-  displayText()
-  player1.update(coins, input)
-  player1.draw()
-
-  coinTimer += 1
-
-  if (coinTimer > coinIntervall) {
-    coins = coins.filter((coin) => !coin.markedForDeletion)
-    coins.push(new Coin(deltaTime))
-    coinTimer = 0
-  } else {
-    coinTimer += deltaTime
-  }
-
-  coins
-    .filter((coin) => !coin.markedForDeletion)
-    .forEach((coin) => {
-      coin.draw()
-      coin.update()
-    })
+  coins.forEach((coins) => {
+    if (!coins.markedForDeletion) {
+      coins.render()
+      coins.update(player1)
+    }
+  })
+  player1.update(input)
+  player1.render()
+  text.renderScore()
 
   window.requestAnimationFrame(animate)
 }

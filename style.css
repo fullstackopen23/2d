@@ -9,8 +9,7 @@ body {
   width: 100%;
 }
 
-#canvas,
-#canvas2 {
+#canvas {
   position: absolute;
   height: 400px;
   width: 400px;
@@ -18,7 +17,4 @@ body {
 
 #canvas {
   border: 1px solid red;
-}
-#canvas2 {
-  border: 1px solid black;
 }
