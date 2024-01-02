@@ -16,18 +16,37 @@ let score = 0;
 const player = new Player(canvas);
 const movement = new Movement(player);
 const border = [
-  new Tiles(0, 0, canvas.width, 10),
-  new Tiles(0, canvas.height - 10, canvas.width, 10),
-  new Tiles(0, 0, 10, canvas.height),
-  new Tiles(canvas.width - 10, 0, 10, canvas.height),
+  new Tiles(0, -10, canvas.width, 10),
+  new Tiles(0, canvas.height, canvas.width, 10),
+  new Tiles(-10, 0, 10, canvas.height),
+  new Tiles(canvas.width, 0, 10, canvas.height),
 ];
 let tiles = [...border];
+const map = [
+  [1, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 1],
+  [0, 0, 0, 0, 0, 0, 1],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 1, 0],
+];
+
+map.forEach((row, i) => {
+  row.forEach((symbol, j) => {
+    if (symbol === 1) {
+      tiles.push(new Tiles(j * 20, i * 20, 20, 20));
+      console.log("hu");
+    }
+  });
+});
+
 const coin = new Coin();
 const text = new Text();
-
-const level2 = 1;
-const level3 = 3;
-const level4 = 5;
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
