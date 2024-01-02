@@ -1,6 +1,5 @@
 export default class Tiles {
   constructor(x, y, width, height) {
-    this.canvas = canvas;
     this.height = height;
     this.width = width;
     this.x = x;

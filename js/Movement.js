@@ -12,7 +12,7 @@ export default class Movement {
         this.keys.left = true;
       } else if (e.key === " ") {
         if (!this.keys.isJumping) {
-          player1.vy -= 20;
+          player1.vy -= 24;
           this.keys.isJumping = true;
         }
       }
