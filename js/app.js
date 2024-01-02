@@ -1,73 +1,86 @@
-import Player from "./Player.js";
-import Movement from "./Movement.js";
-import Tiles from "./Tiles.js";
-import Text from "./Text.js";
-import Coin from "./Coin.js";
+import Player from './Player.js'
+import Movement from './Movement.js'
+import Tiles from './Tiles.js'
+import Text from './Text.js'
+import Coin from './Coin.js'
 
 const canvas = /** @type {HTMLCanvasElement} */ (
-  document.querySelector("#canvas")
-);
-canvas.width = innerWidth / 1.2;
-canvas.height = innerHeight / 1.2;
-const ctx = canvas.getContext("2d");
+  document.querySelector('#canvas')
+)
+canvas.width = 320
+canvas.height = 320
+const ctx = canvas.getContext('2d')
+const bg = document.getElementById('bg')
 
 // init
-let score = 0;
-const player = new Player(canvas);
-const movement = new Movement(player);
+let score = 0
+const player = new Player(canvas)
+const movement = new Movement(player)
 const border = [
   new Tiles(0, -10, canvas.width, 10),
   new Tiles(0, canvas.height, canvas.width, 10),
   new Tiles(-10, 0, 10, canvas.height),
   new Tiles(canvas.width, 0, 10, canvas.height),
-];
-let tiles = [...border];
-const map = [
-  [1, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 1],
-  [0, 0, 0, 0, 0, 0, 1],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 1, 0],
-];
+]
+let tiles = [...border]
+const data = [
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 31, 32, 33, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 13,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 13, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 23, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2,
+  3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 12, 13, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 22, 23, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21,
+  22, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+]
+let map = []
 
+for (let i = 0; i < data.length; i += 20) {
+  map.push(data.slice(i, i + 20))
+}
+
+console.log(map)
 map.forEach((row, i) => {
   row.forEach((symbol, j) => {
-    if (symbol === 1) {
-      tiles.push(new Tiles(j * 20, i * 20, 20, 20));
-      console.log("hu");
+    if (symbol != 0) {
+      tiles.push(new Tiles(j * 16, i * 16, 16, 16))
     }
-  });
-});
+  })
+})
 
-const coin = new Coin();
-const text = new Text();
+const coin = new Coin()
+const text = new Text()
 
 function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  text.render("Score: " + score, 20, 30);
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  text.render('Score: ' + score, 20, 30)
 
   // horizontal movement
   if (movement.keys.right) {
-    player.vx = 5;
+    player.vx = 5
   } else if (movement.keys.left) {
-    player.vx = -5;
+    player.vx = -5
   } else {
-    player.vx = 0;
+    player.vx = 0
   }
 
   if (collides(player, coin)) {
-    score++;
-    coin.update();
-    coin.draw();
+    score++
+    coin.update()
+    coin.draw()
   }
   tiles.forEach((tile) => {
-    tile.draw();
+    tile.draw()
 
     // vertical collision top to bottom
     if (
@@ -76,9 +89,9 @@ function animate() {
       player.x <= tile.x + tile.width &&
       player.x + player.width >= tile.x
     ) {
-      movement.keys.isJumping = false;
-      player.y = tile.y - player.height - 0.01;
-      player.vy = 0;
+      movement.keys.isJumping = false
+      player.y = tile.y - player.height - 0.01
+      player.vy = 0
     }
     // vertical collision bottom to top
     if (
@@ -87,61 +100,39 @@ function animate() {
       player.x <= tile.x + tile.width &&
       player.x + player.width >= tile.x
     ) {
-      player.y = tile.y + tile.height + 0.01;
-      player.vy = 0;
+      player.y = tile.y + tile.height + 0.01
+      player.vy = 0
     }
 
     if (collides(player, tile)) {
       if (player.vx > 0) {
-        player.x = tile.x - player.width - 0.01;
-        player.vx = 0;
+        player.x = tile.x - player.width - 0.01
+        player.vx = 0
       } else if (player.vx < 0) {
-        player.vx = 0;
-        player.x = tile.x + tile.width + 0.01;
+        player.vx = 0
+        player.x = tile.x + tile.width + 0.01
       }
     }
-  });
-  player.render();
-  coin.draw();
+  })
+  player.render()
+  coin.draw()
 
   tiles.forEach((tile) => {
     if (collides(tile, coin)) {
-      coin.update();
-      coin.draw();
+      coin.update()
+      coin.draw()
     }
-  });
+  })
 
-  // changes the levels dependet on score
-  if (score > 3) {
-    tiles.splice(4, tiles.length);
-    tiles = [
-      ...tiles,
-      new Tiles(100, 100, 300, 30),
-      new Tiles(100, 100, 30, 180),
-      new Tiles(200, 40, 30, 60),
-    ];
-  } else if (score > 2) {
-    tiles.splice(4, tiles.length);
-    tiles = [
-      ...tiles,
-      new Tiles(100, 100, 300, 30),
-      new Tiles(100, 100, 30, 180),
-    ];
-  } else if (score >= 1) {
-    text.render("Level 1", 20, 50);
-
-    tiles.splice(4, tiles.length);
-    tiles = [...tiles, new Tiles(100, 100, 300, 30)];
-  }
-
-  requestAnimationFrame(animate);
+  ctx.drawImage(bg, 0, 0)
+  requestAnimationFrame(animate)
 }
 
-animate();
+animate()
 
 function collides(obj1, obj2) {
   if (!obj1.vx) {
-    obj1.vx = 0;
+    obj1.vx = 0
   }
   if (
     obj1.x + obj1.vx + obj1.width >= obj2.x &&
@@ -149,6 +140,6 @@ function collides(obj1, obj2) {
     obj1.y + obj1.height >= obj2.y &&
     obj1.y <= obj2.y + obj2.height
   ) {
-    return true;
+    return true
   }
 }
