@@ -1,9 +1,9 @@
 export default class Player {
   constructor(canvas) {
-    this.x = 100
+    this.x = 10
+    this.y = 10
     this.height = 16
     this.width = 16
-    this.y = 50
     this.canvas = canvas
     this.ctx = canvas.getContext('2d')
     this.vy = 0

@@ -3,6 +3,8 @@ import Movement from './Movement.js'
 import Tiles from './Tiles.js'
 import Text from './Text.js'
 import Coin from './Coin.js'
+import { makeArray2D, collides, addTilesFromArray } from './utils.js'
+import { level } from './maps.js'
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.querySelector('#canvas')
@@ -10,11 +12,12 @@ const canvas = /** @type {HTMLCanvasElement} */ (
 canvas.width = 320
 canvas.height = 320
 const ctx = canvas.getContext('2d')
-const bg = document.getElementById('bg')
 
 // init
-let score = 0
+let score = 3
 const player = new Player(canvas)
+const coin = new Coin()
+const text = new Text()
 const movement = new Movement(player)
 const border = [
   new Tiles(0, -10, canvas.width, 10),
@@ -23,46 +26,22 @@ const border = [
   new Tiles(canvas.width, 0, 10, canvas.height),
 ]
 let tiles = [...border]
-const data = [
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 31, 32, 33, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 13,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 13, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 23, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2,
-  3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 12, 13, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 22, 23, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21,
-  22, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-]
-let map = []
+let currentBackground = level.levelOne.image
 
-for (let i = 0; i < data.length; i += 20) {
-  map.push(data.slice(i, i + 20))
-}
-
-console.log(map)
-map.forEach((row, i) => {
-  row.forEach((symbol, j) => {
-    if (symbol != 0) {
-      tiles.push(new Tiles(j * 16, i * 16, 16, 16))
-    }
-  })
-})
-
-const coin = new Coin()
-const text = new Text()
+// init level1
+addTilesFromArray(makeArray2D(level.levelOne.map), tiles)
+currentBackground = level.levelOne.image
 
 function animate() {
+  if (score > 1) {
+    tiles = [...border]
+    addTilesFromArray(makeArray2D(level.levelThree.map), tiles)
+    currentBackground = level.levelThree.image
+  }
+
   ctx.clearRect(0, 0, canvas.width, canvas.height)
+  coin.draw()
+  coin.update()
   text.render('Score: ' + score, 20, 30)
 
   // horizontal movement
@@ -74,14 +53,14 @@ function animate() {
     player.vx = 0
   }
 
+  // collection a coin
   if (collides(player, coin)) {
     score++
-    coin.update()
-    coin.draw()
+    console.log('coin collected')
   }
+
   tiles.forEach((tile) => {
     tile.draw()
-
     // vertical collision top to bottom
     if (
       player.y + player.height + player.vy >= tile.y &&
@@ -103,7 +82,7 @@ function animate() {
       player.y = tile.y + tile.height + 0.01
       player.vy = 0
     }
-
+    // horizontal collision with tiles
     if (collides(player, tile)) {
       if (player.vx > 0) {
         player.x = tile.x - player.width - 0.01
@@ -114,32 +93,11 @@ function animate() {
       }
     }
   })
+
   player.render()
-  coin.draw()
 
-  tiles.forEach((tile) => {
-    if (collides(tile, coin)) {
-      coin.update()
-      coin.draw()
-    }
-  })
-
-  ctx.drawImage(bg, 0, 0)
+  ctx.drawImage(currentBackground, 0, 0)
   requestAnimationFrame(animate)
 }
 
 animate()
-
-function collides(obj1, obj2) {
-  if (!obj1.vx) {
-    obj1.vx = 0
-  }
-  if (
-    obj1.x + obj1.vx + obj1.width >= obj2.x &&
-    obj1.x + obj1.vx <= obj2.x + obj2.width &&
-    obj1.y + obj1.height >= obj2.y &&
-    obj1.y <= obj2.y + obj2.height
-  ) {
-    return true
-  }
-}

@@ -4,25 +4,25 @@ export default class Movement {
       right: false,
       left: false,
       isJumping: false,
-    };
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "d") {
-        this.keys.right = true;
-      } else if (e.key === "a") {
-        this.keys.left = true;
-      } else if (e.key === " ") {
+    }
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'd') {
+        this.keys.right = true
+      } else if (e.key === 'a') {
+        this.keys.left = true
+      } else if (e.key === ' ') {
         if (!this.keys.isJumping) {
-          player1.vy -= 24;
-          this.keys.isJumping = true;
+          player1.vy -= 18
+          this.keys.isJumping = true
         }
       }
-    });
-    window.addEventListener("keyup", (e) => {
-      if (e.key === "d") {
-        this.keys.right = false;
-      } else if (e.key === "a") {
-        this.keys.left = false;
+    })
+    window.addEventListener('keyup', (e) => {
+      if (e.key === 'd') {
+        this.keys.right = false
+      } else if (e.key === 'a') {
+        this.keys.left = false
       }
-    });
+    })
   }
 }

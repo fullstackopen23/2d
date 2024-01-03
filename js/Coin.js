@@ -1,18 +1,39 @@
+import { collides } from './utils.js'
+
+const coinImg = document.getElementById('coin')
+
 export default class Coin {
   constructor() {
-    this.x = 400;
-    this.y = 100;
-    this.height = 20;
-    this.width = 20;
-    this.ctx = canvas.getContext("2d");
+    this.width = 16
+    this.height = 16
+    this.x = 100
+    this.y = 100
+    this.ctx = canvas.getContext('2d')
+    this.frameX = 0
+    this.fpsCounter = 0
   }
   draw() {
-    this.ctx.fillStyle = "yellow";
-    this.ctx.fillRect(this.x, this.y, this.width, this.height);
+    this.ctx.drawImage(
+      coinImg,
+      16 * this.frameX,
+      0,
+      16,
+      16,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    )
   }
 
   update() {
-    this.x = (canvas.width - this.width) * Math.random();
-    this.y = (canvas.height - this.height) * Math.random();
+    this.fpsCounter++
+    if (this.fpsCounter % 8 === 0) {
+      this.fpsCounter = 0
+      this.frameX++
+      if (this.frameX >= 5) {
+        this.frameX = 0
+      }
+    }
   }
 }
