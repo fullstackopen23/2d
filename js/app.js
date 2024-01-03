@@ -14,7 +14,7 @@ canvas.height = 320
 const ctx = canvas.getContext('2d')
 
 // init
-let score = 3
+let score = 0
 const player = new Player(canvas)
 const coin = new Coin()
 const text = new Text()
@@ -31,15 +31,15 @@ let currentBackground = level.levelOne.image
 // init level1
 addTilesFromArray(makeArray2D(level.levelOne.map), tiles)
 currentBackground = level.levelOne.image
+coin.randomCoordinates(tiles)
 
 function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
   if (score > 1) {
     tiles = [...border]
     addTilesFromArray(makeArray2D(level.levelThree.map), tiles)
     currentBackground = level.levelThree.image
   }
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
   coin.draw()
   coin.update()
   text.render('Score: ' + score, 20, 30)
@@ -57,6 +57,7 @@ function animate() {
   if (collides(player, coin)) {
     score++
     console.log('coin collected')
+    coin.randomCoordinates(tiles)
   }
 
   tiles.forEach((tile) => {

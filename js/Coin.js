@@ -6,8 +6,8 @@ export default class Coin {
   constructor() {
     this.width = 16
     this.height = 16
-    this.x = 100
-    this.y = 100
+    this.x = 0
+    this.y = 0
     this.ctx = canvas.getContext('2d')
     this.frameX = 0
     this.fpsCounter = 0
@@ -33,6 +33,26 @@ export default class Coin {
       this.frameX++
       if (this.frameX >= 5) {
         this.frameX = 0
+      }
+    }
+  }
+
+  randomCoordinates(tiles) {
+    const tempCoin = {
+      height: this.height,
+      width: this.width,
+      x: Math.random() * (canvas.width - this.width),
+      y: Math.random() * (canvas.height - this.height),
+    }
+
+    for (let i = 0; i < tiles.length; i++) {
+      if (collides(tempCoin, tiles[i])) {
+        console.log('hah')
+        this.randomCoordinates(tiles)
+        break
+      } else {
+        this.x = tempCoin.x
+        this.y = tempCoin.y
       }
     }
   }
