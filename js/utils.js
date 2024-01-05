@@ -8,16 +8,16 @@ export function makeArray2D(input) {
   return newArray
 }
 
-export function collides(obj1, obj2) {
-  if (!obj1.vx) {
-    obj1.vx = 0
-  }
-  if (
-    obj1.x + obj1.vx + obj1.width >= obj2.x &&
-    obj1.x + obj1.vx <= obj2.x + obj2.width &&
-    obj1.y + obj1.height >= obj2.y &&
-    obj1.y <= obj2.y + obj2.height
-  ) {
+export function collides(r1, r2) {
+  if (r1.y + r1.height <= r2.y) {
+    return false
+  } else if (r1.y >= r2.y + r2.height) {
+    return false
+  } else if (r1.x + r1.width <= r2.x) {
+    return false
+  } else if (r1.x >= r2.x + r2.width) {
+    return false
+  } else {
     return true
   }
 }
