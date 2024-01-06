@@ -4,6 +4,8 @@ const runImg = document.getElementById('run')
 const runLeftImg = document.getElementById('runLeft')
 const jumpImg = document.getElementById('jump')
 const jumpLeftImg = document.getElementById('jumpLeft')
+const takeImg = document.getElementById('take')
+const takeLeftImg = document.getElementById('takeLeft')
 
 export const sprites = {
   idleRight: {
@@ -29,5 +31,13 @@ export const sprites = {
   jumpLeft: {
     image: jumpLeftImg,
     frames: 2,
+  },
+  take: {
+    image: takeImg,
+    frames: 4,
+  },
+  takeLeft: {
+    image: takeLeftImg,
+    frames: 4,
   },
 }

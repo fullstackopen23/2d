@@ -27,6 +27,7 @@ export default class Player {
     this.fpsCounter = 0
     this.currentSprite = sprites.idleRight
     this.lastDir
+    this.take = false
   }
 
   updateHitbox() {
@@ -38,19 +39,12 @@ export default class Player {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'd') {
         this.right = true
-        this.lastDir = 'right'
       } else if (e.key === 'a') {
         this.left = true
-        this.lastDir = 'left'
       } else if (e.key === ' ') {
         if (!this.isJumping) {
           this.vy -= 17
           this.isJumping = true
-          if (this.lastDir === 'left') {
-            this.currentSprite = sprites.jumpLeft
-          } else {
-            this.currentSprite = sprites.jumpRight
-          }
         }
       }
     })
@@ -65,8 +59,8 @@ export default class Player {
   }
 
   draw() {
-    this.ctx.fillStyle = 'rgba(15, 165, 0, 0.8)'
-    /* this.ctx.fillRect(
+    /* this.ctx.fillStyle = 'rgba(15, 165, 0, 0.8)'
+    this.ctx.fillRect(
       this.hitbox.x,
       this.hitbox.y,
       this.hitbox.width,
@@ -83,19 +77,9 @@ export default class Player {
       this.width,
       this.height
     )
-    /*  this.ctx.fillStyle = 'rgba(15, 165, 0, 0.2)'
-    this.ctx.fillRect(this.x, this.y, this.width, this.height)
-    this.ctx.drawImage(
-      idleImg,
-      0,
-      0,
-      this.spriteWidth,
-      this.spriteHeight,
-      this.x,
-      this.y,
-      this.width,
-      this.height
-    ) */
+    this.ctx.fillStyle = 'rgba(15, 165, 0, 0.2)'
+    /*     this.ctx.fillRect(this.x, this.y, this.width, this.height)
+     */
   }
 
   update(tiles) {
@@ -103,24 +87,42 @@ export default class Player {
     this.applyGravity()
     if (this.right) {
       this.vx = 3
-      this.currentSprite = sprites.runRight
+      this.lastDir = 'right'
+      if (!this.take) this.currentSprite = sprites.runRight
     } else if (this.left) {
       this.vx = -3
-      this.currentSprite = sprites.runLeft
+      this.lastDir = 'left'
+      if (!this.take) this.currentSprite = sprites.runLeft
     } else {
-      if (this.lastDir === 'left') {
+      if (this.lastDir === 'left' && !this.isJumping && !this.take) {
         this.currentSprite = sprites.idleLeft
-      } else {
+      } else if (
+        this.lastDir === 'left' &&
+        this.isJumping &&
+        !this.take
+      ) {
+        this.currentSprite = sprites.jumpLeft
+      } else if (
+        this.lastDir === 'right' &&
+        !this.isJumping &&
+        !this.take
+      ) {
         this.currentSprite = sprites.idleRight
+      } else if (
+        this.lastDir === 'right' &&
+        this.isJumping &&
+        !this.take
+      ) {
+        this.currentSprite = sprites.jumpRight
       }
       this.vx = 0
     }
 
-    if (this.isJumping) {
+    if (this.take) {
       if (this.lastDir === 'left') {
-        this.currentSprite = sprites.jumpLeft
+        this.currentSprite = sprites.takeLeft
       } else {
-        this.currentSprite = sprites.jumpRight
+        this.currentSprite = sprites.take
       }
     }
 
@@ -179,7 +181,7 @@ export default class Player {
     this.y += this.vy
     this.updateHitbox()
     this.fpsCounter++
-    if (this.fpsCounter % 10 === 0) {
+    if (this.fpsCounter % 5 === 0) {
       this.fpsCounter = 0
       this.frameX++
       if (this.frameX >= this.currentSprite.frames) {

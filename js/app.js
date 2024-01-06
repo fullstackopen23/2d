@@ -33,16 +33,34 @@ addTilesFromArray(makeArray2D(level.levelOne.map), tiles)
 currentBackground = level.levelOne.image
 coin.randomCoordinates(tiles)
 
-function animate() {
+let lastTime = 0
+
+function animate(timestamp) {
+  if (score > 3) {
+    tiles = [...border]
+    addTilesFromArray(makeArray2D(level.levelTwo.map), tiles)
+    currentBackground = level.levelTwo.image
+  } else if (score > 2) {
+    tiles = [...border]
+    addTilesFromArray(makeArray2D(level.levelThree.map), tiles)
+    currentBackground = level.levelThree.image
+  }
+
+  const deltaTime = timestamp - lastTime
+  lastTime = timestamp
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   text.render('Score: ' + score, 10, 20)
-
   player.draw()
   coin.draw()
   coin.update()
   if (collides(player.hitbox, coin)) {
     score++
     coin.randomCoordinates(tiles)
+    player.take = true
+    setTimeout(() => {
+      player.take = false
+      console.log('now')
+    }, deltaTime * 40)
   }
   player.update(tiles)
 
@@ -50,4 +68,4 @@ function animate() {
   requestAnimationFrame(animate)
 }
 
-animate()
+animate(0)
