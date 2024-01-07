@@ -8,14 +8,15 @@
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
-  font-family: san;
 }
 
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  justify-content: space-between;
+  gap: 30px;
+  height: 100vh;
   background-color: var(--bg);
 }
 
@@ -29,14 +30,14 @@ header {
 
 header h1 {
   font-family: 'Bungee Spice', sans-serif;
-  font-size: 3.5em;
+  font-size: 2.6em;
   color: var(--orange);
 }
 
 header p {
   font-family: 'Poppins', sans-serif;
   color: var(--white);
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
 
 .canvasContainer {
@@ -83,4 +84,46 @@ header p {
 
 img {
   display: none;
+}
+
+.controls img {
+  display: block;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  width: 100;
+}
+
+.ad {
+  display: flex;
+  gap: 20px;
+}
+
+.ad img {
+  width: 30px;
+  height: 30px;
+}
+
+.ad img {
+  scale: 1.1;
+}
+
+.space img {
+  width: 100px;
+  height: 30px;
+}
+
+footer {
+  height: 6vh;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  color: var(--white);
+  font-family: 'Poppins', sans-serif;
+  background-color: #2e0847;
+  width: 100%;
+  padding: 20px;
 }

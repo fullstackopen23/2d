@@ -1,6 +1,9 @@
 import { collides } from './utils.js'
 import { sprites } from './sprites.js'
 import { scale } from './app.js'
+const aBtn = document.querySelector('#a')
+const dBtn = document.querySelector('#d')
+const spaceBtn = document.querySelector('#space')
 
 export default class Player {
   constructor(canvas) {
@@ -45,6 +48,7 @@ export default class Player {
 
   setupMovement() {
     document.addEventListener('keydown', (e) => {
+      e.preventDefault()
       if (e.key === 'd') {
         this.right = true
       } else if (e.key === 'a') {
@@ -63,6 +67,28 @@ export default class Player {
       } else if (e.key === 'a') {
         this.left = false
       }
+    })
+
+    spaceBtn.addEventListener('touchstart', () => {
+      if (!this.isJumping) {
+        this.vy = this.vy - 17 * scale
+        this.isJumping = true
+      }
+    })
+
+    aBtn.addEventListener('touchstart', () => {
+      this.left = true
+    })
+
+    aBtn.addEventListener('touchend', () => {
+      this.left = false
+    })
+    dBtn.addEventListener('touchstart', () => {
+      this.right = true
+    })
+
+    dBtn.addEventListener('touchend', () => {
+      this.right = false
     })
   }
 

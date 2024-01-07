@@ -48,7 +48,7 @@ export default class Coin {
 
     for (let i = 0; i < tiles.length; i++) {
       if (collides(tempCoin, tiles[i])) {
-        console.log('h')
+        console.log('Coin collides with a tile!')
         this.randomCoordinates(tiles)
         break
       } else {

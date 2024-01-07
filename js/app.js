@@ -7,6 +7,7 @@ import { level } from './maps.js'
 const restartContainer = document.querySelector('.restart')
 const timeText = document.querySelector('#time')
 import { Timer } from './Timer.js'
+const coinAudio = new Audio('../sounds/coin.mp3')
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.querySelector('#canvas')
@@ -62,6 +63,9 @@ window.onload = () => {
     timer.start()
     tiles = [...border]
 
+    level.levelTwo.loaded = false
+    level.levelThree.loaded = false
+
     addTilesFromArray(makeArray2D(level.levelOne.map), tiles)
     currentBackground = level.levelOne.image
     coin.randomCoordinates(tiles)
@@ -80,11 +84,13 @@ window.onload = () => {
       addTilesFromArray(makeArray2D(level.levelTwo.map), tiles)
       currentBackground = level.levelTwo.image
       level.levelTwo.loaded = true
+      coin.randomCoordinates(tiles)
     } else if (score >= 10 && !level.levelThree.loaded) {
       tiles = [...border]
       addTilesFromArray(makeArray2D(level.levelThree.map), tiles)
       currentBackground = level.levelThree.image
       level.levelThree.loaded = true
+      coin.randomCoordinates(tiles)
     } else if (score >= 15) {
       gameover = true
     }
@@ -97,6 +103,7 @@ window.onload = () => {
       score++
       coin.randomCoordinates(tiles)
       player.take = true
+      coinAudio.play()
     }
 
     player.update(tiles)
