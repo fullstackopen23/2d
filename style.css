@@ -1,27 +1,86 @@
+:root {
+  --bg: #440b6b;
+  --white: #ffffff;
+  --orange: #fab81d;
+}
+
 * {
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
+  font-family: san;
 }
 
-#canvas {
-  border: 1px solid black;
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  background-color: var(--bg);
+}
+
+header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px 70px;
+}
+
+header h1 {
+  font-family: 'Bungee Spice', sans-serif;
+  font-size: 3.5em;
+  color: var(--orange);
+}
+
+header p {
+  font-family: 'Poppins', sans-serif;
+  color: var(--white);
+  font-size: 1.2em;
+}
+
+.canvasContainer {
+  position: relative;
+}
+
+.restart {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  padding: 30px;
+  background-color: var(--white);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.84;
+  border-radius: 5px;
+  gap: 10px;
+  display: none;
+}
+
+.restart.active {
+  display: flex;
+}
+
+.restart p,
+.restart button {
+  font-family: 'Poppins', sans-serif;
+}
+
+.restart button {
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.canvasContainer #canvas {
+  border-radius: 5px;
+  background-image: url('./img/bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 img {
   display: none;
-}
-
-#bg {
-  display: block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: -1;
-  opacity: 0.9;
 }

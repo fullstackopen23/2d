@@ -1,17 +1,18 @@
 import { collides } from './utils.js'
 import { sprites } from './sprites.js'
+import { scale } from './app.js'
 
 export default class Player {
   constructor(canvas) {
     this.x = 10
     this.y = 10
-    this.height = 40
-    this.width = 40
+    this.height = 40 * scale
+    this.width = 40 * scale
     this.canvas = canvas
     this.ctx = canvas.getContext('2d')
     this.vy = 0
     this.vx = 0
-    this.weight = 1
+    this.weight = 1 * scale
     this.spriteWidth = 50
     this.spriteHeight = 50
     this.left = false
@@ -20,8 +21,8 @@ export default class Player {
     this.hitbox = {
       x: this.x,
       y: this.y,
-      width: this.width - 30,
-      height: this.height - 15,
+      width: this.width - 30 * scale,
+      height: this.height - 15 * scale,
     }
     this.frameX = 0
     this.fpsCounter = 0
@@ -31,8 +32,15 @@ export default class Player {
   }
 
   updateHitbox() {
-    this.hitbox.x = this.x + 16
-    this.hitbox.y = this.y + 8
+    this.hitbox.x = this.x + 16 * scale
+    this.hitbox.y = this.y + 8 * scale
+  }
+
+  restart() {
+    this.x = 10
+    this.y = 10
+    this.vy = 0
+    this.vx = 0
   }
 
   setupMovement() {
@@ -43,7 +51,7 @@ export default class Player {
         this.left = true
       } else if (e.key === ' ') {
         if (!this.isJumping) {
-          this.vy -= 17
+          this.vy = this.vy - 17 * scale
           this.isJumping = true
         }
       }
@@ -77,20 +85,19 @@ export default class Player {
       this.width,
       this.height
     )
-    this.ctx.fillStyle = 'rgba(15, 165, 0, 0.2)'
-    /*     this.ctx.fillRect(this.x, this.y, this.width, this.height)
-     */
+    /* this.ctx.fillStyle = 'rgba(15, 165, 0, 0.2)'
+    this.ctx.fillRect(this.x, this.y, this.width, this.height) */
   }
 
   update(tiles) {
     this.updateHitbox()
     this.applyGravity()
     if (this.right) {
-      this.vx = 3
+      this.vx = 3 * scale
       this.lastDir = 'right'
       if (!this.take) this.currentSprite = sprites.runRight
     } else if (this.left) {
-      this.vx = -3
+      this.vx = -3 * scale
       this.lastDir = 'left'
       if (!this.take) this.currentSprite = sprites.runLeft
     } else {
@@ -114,6 +121,8 @@ export default class Player {
         !this.take
       ) {
         this.currentSprite = sprites.jumpRight
+      } else {
+        this.currentSprite = sprites.idleRight
       }
       this.vx = 0
     }
@@ -124,6 +133,9 @@ export default class Player {
       } else {
         this.currentSprite = sprites.take
       }
+      setTimeout(() => {
+        this.take = false
+      }, 700)
     }
 
     let verticalRext = {
@@ -142,14 +154,14 @@ export default class Player {
     tiles.forEach((tile) => {
       if (collides(horizontalRext, tile)) {
         if (this.vx > 0) {
-          console.log('collides on the right')
+          //console.log('collides on the right')
           const offset =
             this.x + this.width - this.hitbox.x - this.hitbox.width
           this.x = tile.x - this.width + offset - 0.01
         } else if (this.vx < 0) {
           const offset = this.hitbox.x - this.x
           this.x = tile.x + tile.width - offset + 0.01
-          console.log('collides on the left ')
+          //console.log('collides on the left ')
         }
         this.vx = 0
       }
@@ -171,7 +183,7 @@ export default class Player {
         if (this.vy < 0) {
           this.vy = 0
           const offset = this.hitbox.y - this.y
-          console.log('collides: bottom of tile')
+          //console.log('collides: bottom of tile')
           this.y = tile.y + tile.height - offset + 0.01
         }
       }

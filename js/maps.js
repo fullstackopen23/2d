@@ -24,6 +24,7 @@ export const level = {
       2, 2, 2, 2, 2, 2, 2, 2,
     ],
     image: document.getElementById('bg1'),
+    loaded: false,
   },
   levelTwo: {
     map: [
@@ -49,6 +50,7 @@ export const level = {
       2, 2, 2, 2, 2, 2, 2, 2, 2, 1073741844, 3221225492, 2, 2, 2, 2,
     ],
     image: document.getElementById('bg2'),
+    loaded: false,
   },
   levelThree: {
     map: [
@@ -74,5 +76,6 @@ export const level = {
       2, 2,
     ],
     image: document.getElementById('bg3'),
+    loaded: false,
   },
 }

@@ -1,13 +1,14 @@
 import { collides } from './utils.js'
+import { scale } from './app.js'
 
 const coinImg = document.getElementById('coin')
 
 export default class Coin {
   constructor() {
-    this.width = 16
-    this.height = 16
-    this.x = 0
-    this.y = 0
+    this.width = 16 * scale
+    this.height = 16 * scale
+    this.x = -100
+    this.y = -100
     this.ctx = canvas.getContext('2d')
     this.frameX = 0
     this.fpsCounter = 0
@@ -47,6 +48,7 @@ export default class Coin {
 
     for (let i = 0; i < tiles.length; i++) {
       if (collides(tempCoin, tiles[i])) {
+        console.log('h')
         this.randomCoordinates(tiles)
         break
       } else {

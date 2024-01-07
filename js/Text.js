@@ -1,9 +1,15 @@
+import { scale } from './app.js'
+import { Timer } from './Timer.js'
+
 export default class Text {
   constructor() {
-    this.ctx = canvas.getContext("2d");
+    this.ctx = canvas.getContext('2d')
+    this.timer = new Timer()
   }
   render(text, x, y) {
-    this.ctx.fillStyle = "black";
-    this.ctx.fillText(text, x, y);
+    this.ctx.fillStyle = 'black'
+    const fontSize = 15 * scale
+    this.ctx.font = `${fontSize}px  Poppins`
+    this.ctx.fillText(text, x, y)
   }
 }
