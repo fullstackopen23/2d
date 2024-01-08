@@ -8,7 +8,7 @@ import { Timer } from "./Timer.js";
 
 const restartContainer = document.querySelector(".restart");
 const timeText = document.querySelector("#time");
-const coinAudio = new Audio("../sounds/coin.mp3");
+const coinAudio = new Audio("sounds/coin.mp3");
 const canvasContainer = document.querySelector(".canvasContainer");
 
 const canvas = /** @type {HTMLCanvasElement} */ (
