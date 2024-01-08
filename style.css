@@ -10,12 +10,15 @@
   box-sizing: border-box;
 }
 
+button {
+  cursor: pointer;
+}
+
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 30px;
   height: 100vh;
   background-color: var(--bg);
 }
@@ -29,15 +32,25 @@ header {
 }
 
 header h1 {
-  font-family: 'Bungee Spice', sans-serif;
+  font-family: "Bungee Spice", sans-serif;
   font-size: 2.6em;
   color: var(--orange);
 }
 
-header p {
-  font-family: 'Poppins', sans-serif;
+@media (min-width: 750px) {
+  header h1 {
+    font-size: 4em;
+  }
+}
+
+header p,
+.canvasContainer p {
+  font-family: "Poppins", sans-serif;
   color: var(--white);
-  font-size: 1.1em;
+}
+
+.canvasContainer p {
+  font-size: 0.7em;
 }
 
 .canvasContainer {
@@ -66,7 +79,8 @@ header p {
 
 .restart p,
 .restart button {
-  font-family: 'Poppins', sans-serif;
+  color: black;
+  font-family: "Poppins", sans-serif;
 }
 
 .restart button {
@@ -76,7 +90,7 @@ header p {
 
 .canvasContainer #canvas {
   border-radius: 5px;
-  background-image: url('./img/bg.png');
+  background-image: url("./img/bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -84,6 +98,11 @@ header p {
 
 img {
   display: none;
+}
+
+.controls button {
+  background-color: transparent;
+  border: none;
 }
 
 .controls img {
@@ -94,7 +113,10 @@ img {
   display: flex;
   justify-content: space-between;
   gap: 40px;
-  width: 100;
+}
+
+.how {
+  width: 100%;
 }
 
 .ad {
@@ -107,23 +129,30 @@ img {
   height: 30px;
 }
 
-.ad img {
-  scale: 1.1;
-}
-
 .space img {
   width: 100px;
   height: 30px;
 }
 
 footer {
-  height: 6vh;
   display: flex;
+  flex-direction: column;
   align-self: center;
   justify-content: center;
   color: var(--white);
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: #2e0847;
   width: 100%;
   padding: 20px;
+  margin-top: 70px;
+  font-size: 0.8em;
+}
+
+footer .sources {
+  display: flex;
+  flex-direction: column;
+}
+
+footer a {
+  color: var(--orange);
 }
