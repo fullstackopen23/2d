@@ -8,7 +8,7 @@
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -39,7 +39,7 @@ header {
 }
 
 header h1 {
-  font-family: 'Bungee Spice', sans-serif;
+  font-family: "Bungee Spice", sans-serif;
   font-size: 2.6em;
   color: var(--orange);
 }
@@ -70,7 +70,7 @@ header p {
 }
 
 .canvasContainer #canvas {
-  background-image: url('./img/bg.png');
+  background-image: url("./img/bg.png");
   background-size: cover;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   background-position: center;
@@ -83,25 +83,24 @@ header p {
 }
 
 .controls {
-  width: 90%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  gap: 40px;
 }
 
 .ad {
   display: flex;
-  gap: 20px;
+  gap: 10px;
 }
 
 .ad input {
-  width: 30px;
-  height: 30px;
+  width: 42px;
+  height: 42px;
 }
 
 .space input {
-  width: 100px;
-  height: 30px;
+  width: 140px;
+  height: 42px;
 }
 
 /* Restart window */
@@ -110,6 +109,8 @@ header p {
   position: absolute;
   left: 50%;
   top: 20%;
+  width: 75%;
+  height: 50%;
   transform: translate(-50%, 0);
   padding: 10px;
   background-color: var(--white);
@@ -130,7 +131,7 @@ header p {
 .restart p,
 .restart button {
   color: black;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .restart button {
@@ -145,7 +146,7 @@ footer {
   flex-direction: column;
   justify-content: center;
   color: var(--white);
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: #2e0847;
   width: 100%;
   padding: 20px;
