@@ -7,7 +7,7 @@ export default class Tiles {
     this.ctx = canvas.getContext('2d')
   }
   draw() {
-    this.ctx.fillStyle = 'rgba(15, 165, 0, 0.2)'
-    this.ctx.fillRect(this.x, this.y, this.width, this.height)
+    /* this.ctx.fillStyle = 'rgba(15, 165, 0, 0.9)'
+    this.ctx.fillRect(this.x, this.y, this.width, this.height) */
   }
 }

@@ -1,6 +1,4 @@
 import Tiles from './Tiles.js'
-import { scale } from './app.js'
-const progessBar = document.getElementById('progessBar')
 
 export function makeArray2D(input) {
   let newArray = []
@@ -24,17 +22,11 @@ export function collides(r1, r2) {
   }
 }
 
-export function addTilesFromArray(input, tiles) {
+export function createTiles(input, tiles) {
   input.forEach((row, i) => {
     row.forEach((symbol, j) => {
-      if (symbol != 2) {
-        const tile = new Tiles(
-          j * 16 * scale,
-          i * 16 * scale,
-          16 * scale,
-          16 * scale
-        )
-        tile.draw()
+      if (symbol != 1) {
+        const tile = new Tiles(j * 16, i * 16, 16, 16)
         tiles.push(tile)
       }
     })

@@ -8,10 +8,7 @@
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
-}
-
-button {
-  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -19,9 +16,19 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--bg);
 }
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: none;
+}
+
+/* HEADER */
 
 header {
   text-align: center;
@@ -32,37 +39,79 @@ header {
 }
 
 header h1 {
-  font-family: "Bungee Spice", sans-serif;
+  font-family: 'Bungee Spice', sans-serif;
   font-size: 2.6em;
   color: var(--orange);
 }
 
+header p {
+  color: var(--white);
+  font-size: 0.9em;
+}
+
 @media (min-width: 750px) {
   header h1 {
-    font-size: 4em;
+    font-size: 5em;
+  }
+  header p {
+    font-size: 1.1em;
   }
 }
 
-header p,
-.canvasContainer p {
-  font-family: "Poppins", sans-serif;
-  color: var(--white);
-}
-
-.canvasContainer p {
-  font-size: 0.7em;
-}
+/* MAIN CANVAS */
 
 .canvasContainer {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
+
+.canvasContainer #canvas {
+  background-image: url('./img/bg.png');
+  background-size: cover;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.controls button {
+  background-color: transparent;
+  border: none;
+}
+
+.controls {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.ad {
+  display: flex;
+  gap: 20px;
+}
+
+.ad input {
+  width: 30px;
+  height: 30px;
+}
+
+.space input {
+  width: 100px;
+  height: 30px;
+}
+
+/* Restart window */
 
 .restart {
   position: absolute;
-  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 30px;
+  top: 20%;
+  transform: translate(-50%, 0);
+  padding: 10px;
   background-color: var(--white);
   flex-direction: column;
   align-items: center;
@@ -71,6 +120,7 @@ header p,
   border-radius: 5px;
   gap: 10px;
   display: none;
+  font-size: 0.9em;
 }
 
 .restart.active {
@@ -80,7 +130,7 @@ header p,
 .restart p,
 .restart button {
   color: black;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .restart button {
@@ -88,59 +138,14 @@ header p,
   padding: 5px 10px;
 }
 
-.canvasContainer #canvas {
-  border-radius: 5px;
-  background-image: url("./img/bg.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-img {
-  display: none;
-}
-
-.controls button {
-  background-color: transparent;
-  border: none;
-}
-
-.controls img {
-  display: block;
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-  gap: 40px;
-}
-
-.how {
-  width: 100%;
-}
-
-.ad {
-  display: flex;
-  gap: 20px;
-}
-
-.ad img {
-  width: 30px;
-  height: 30px;
-}
-
-.space img {
-  width: 100px;
-  height: 30px;
-}
+/* Footer */
 
 footer {
   display: flex;
   flex-direction: column;
-  align-self: center;
   justify-content: center;
   color: var(--white);
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: #2e0847;
   width: 100%;
   padding: 20px;

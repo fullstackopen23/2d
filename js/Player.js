@@ -7,15 +7,15 @@ const spaceBtn = document.querySelector('#space')
 
 export default class Player {
   constructor(canvas) {
-    this.x = 10
+    this.x = 0
     this.y = 10
-    this.height = 40 * scale
-    this.width = 40 * scale
+    this.height = 60
+    this.width = 60
     this.canvas = canvas
     this.ctx = canvas.getContext('2d')
     this.vy = 0
     this.vx = 0
-    this.weight = 1 * scale
+    this.weight = 1
     this.spriteWidth = 50
     this.spriteHeight = 50
     this.left = false
@@ -24,8 +24,8 @@ export default class Player {
     this.hitbox = {
       x: this.x,
       y: this.y,
-      width: this.width - 30 * scale,
-      height: this.height - 15 * scale,
+      width: this.width - 40,
+      height: this.height - 25,
     }
     this.frameX = 0
     this.fpsCounter = 0
@@ -35,8 +35,8 @@ export default class Player {
   }
 
   updateHitbox() {
-    this.hitbox.x = this.x + 16 * scale
-    this.hitbox.y = this.y + 8 * scale
+    this.hitbox.x = this.x + 20
+    this.hitbox.y = this.y + 12
   }
 
   restart() {
@@ -48,14 +48,18 @@ export default class Player {
 
   setupMovement() {
     document.addEventListener('keydown', (e) => {
-      e.preventDefault()
       if (e.key === 'd') {
         this.right = true
+        console.log(dBtn.attributes.src)
+        dBtn.src = 'img/controls/Db.png'
       } else if (e.key === 'a') {
+        aBtn.src = 'img/controls/Ab.png'
         this.left = true
       } else if (e.key === ' ') {
+        spaceBtn.src = 'img/controls/SPACEb.png'
+        e.preventDefault()
         if (!this.isJumping) {
-          this.vy = this.vy - 17 * scale
+          this.vy = this.vy - 17
           this.isJumping = true
         }
       }
@@ -64,31 +68,50 @@ export default class Player {
     document.addEventListener('keyup', (e) => {
       if (e.key === 'd') {
         this.right = false
+        dBtn.src = 'img/controls/D.png'
       } else if (e.key === 'a') {
         this.left = false
+        aBtn.src = 'img/controls/A.png'
+      } else if (e.key === ' ') {
+        spaceBtn.src = 'img/controls/SPACE.png'
       }
     })
 
-    spaceBtn.addEventListener('touchstart', () => {
+    spaceBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault()
       if (!this.isJumping) {
-        this.vy = this.vy - 17 * scale
+        this.vy = this.vy - 17
         this.isJumping = true
+        spaceBtn.src = 'img/controls/SPACEb.png'
       }
     })
 
-    aBtn.addEventListener('touchstart', () => {
+    spaceBtn.addEventListener('touchend', (e) => {
+      e.preventDefault()
+      spaceBtn.src = 'img/controls/SPACE.png'
+    })
+
+    aBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault()
       this.left = true
+      aBtn.src = 'img/controls/Ab.png'
     })
 
-    aBtn.addEventListener('touchend', () => {
+    aBtn.addEventListener('touchend', (e) => {
+      e.preventDefault()
       this.left = false
-    })
-    dBtn.addEventListener('touchstart', () => {
-      this.right = true
+      aBtn.src = 'img/controls/A.png'
     })
 
-    dBtn.addEventListener('touchend', () => {
+    dBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault()
+      this.right = true
+      dBtn.src = 'img/controls/Db.png'
+    })
+    dBtn.addEventListener('touchend', (e) => {
+      e.preventDefault()
       this.right = false
+      dBtn.src = 'img/controls/D.png'
     })
   }
 
@@ -116,14 +139,19 @@ export default class Player {
   }
 
   update(tiles) {
+    this.ctx.save()
+    this.ctx.scale(scale, scale)
+    this.draw()
+    this.ctx.restore()
+
     this.updateHitbox()
     this.applyGravity()
     if (this.right) {
-      this.vx = 3 * scale
+      this.vx = 3
       this.lastDir = 'right'
       if (!this.take) this.currentSprite = sprites.runRight
     } else if (this.left) {
-      this.vx = -3 * scale
+      this.vx = -3
       this.lastDir = 'left'
       if (!this.take) this.currentSprite = sprites.runLeft
     } else {
@@ -180,20 +208,18 @@ export default class Player {
     tiles.forEach((tile) => {
       if (collides(horizontalRext, tile)) {
         if (this.vx > 0) {
-          //console.log('collides on the right')
+          console.log('collides on the right')
           const offset =
             this.x + this.width - this.hitbox.x - this.hitbox.width
           this.x = tile.x - this.width + offset - 0.01
         } else if (this.vx < 0) {
           const offset = this.hitbox.x - this.x
           this.x = tile.x + tile.width - offset + 0.01
-          //console.log('collides on the left ')
+          console.log('collides on the left ')
         }
         this.vx = 0
       }
     })
-
-    this.updateHitbox()
 
     for (let index = 0; index < tiles.length; index++) {
       const tile = tiles[index]
@@ -202,14 +228,14 @@ export default class Player {
         if (this.vy > 0) {
           this.vy = 0
           this.isJumping = false
-          //console.log('collides: top of tile')
+          console.log('collides: top of tile')
           const offset = this.hitbox.y - this.y + this.hitbox.height
           this.y = tile.y - offset - 0.01
         }
         if (this.vy < 0) {
           this.vy = 0
           const offset = this.hitbox.y - this.y
-          //console.log('collides: bottom of tile')
+          console.log('collides: bottom of tile')
           this.y = tile.y + tile.height - offset + 0.01
         }
       }

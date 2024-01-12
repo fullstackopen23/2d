@@ -1,116 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2D Game</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=DM+Sans:ital,opsz,wght@0,9..40,100;0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;0,9..40,1000;1,9..40,100;1,9..40,200;1,9..40,300;1,9..40,400;1,9..40,500;1,9..40,600;1,9..40,700;1,9..40,800;1,9..40,900;1,9..40,1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
-  </head>
 
-  <body>
-    <header>
-      <h1>Scratchy</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2D Game</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=DM+Sans:ital,opsz,wght@0,9..40,100;0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;0,9..40,1000;1,9..40,100;1,9..40,200;1,9..40,300;1,9..40,400;1,9..40,500;1,9..40,600;1,9..40,700;1,9..40,800;1,9..40,900;1,9..40,1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon_io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon_io/favicon-16x16.png">
+  <link rel="manifest" href="img/favicon_io/site.webmanifest">
+</head>
+
+<body>
+  <header>
+    <h1>Scratchy</h1>
+    <div class="headerInfo">
       <p>Collect the coins to explore new levels!</p>
       <p>You finish the game by collecting 15 coins.</p>
-    </header>
+    </div>
+  </header>
 
-    <div class="canvasContainer">
-      <canvas id="canvas"> </canvas>
-      <div class="restart">
-        <p>Gameover</p>
-        <p id="time"></p>
-        <button id="restartBtn">Restart</button>
-      </div>
+  <div class="canvasContainer">
+    <canvas id="canvas"> </canvas>
 
-      <div class="controls">
-        <div class="ad">
-          <button>
-            <img id="a" src="img/controls/A.png" alt="" />
-          </button>
-          <button>
-            <img id="d" src="img/controls/D.png" alt="" />
-          </button>
-        </div>
-        <div class="space">
-          <button>
-            <img id="space" src="img/controls/SPACE.png" alt="" />
-          </button>
-        </div>
+    <div class="restart ">
+      <p>Gameover</p>
+      <p id="time"></p>
+      <button id="restartBtn">Restart</button>
+    </div>
+
+    <div class="controls">
+      <div class="ad">
+        <input id="a" type="image" src="img/controls/A.png" alt="">
+        <input id="d" type="image" src="img/controls/D.png" alt="">
       </div>
-      <div class="how">
-        <p>
-          On PC: Keyboard "A" to move left, "D" to move right, "SPACE" to jump
-        </p>
-        <p>On Mobile: Touch the buttons below</p>
+      <div class="space">
+        <input id="space" type="image" src="img/controls/SPACE.png" alt="">
       </div>
     </div>
 
-    <img id="bg" src="img/bg.png" alt="bg" />
 
-    <img id="bg1" src="img/level1.png" alt="bg" />
-    <img id="bg2" src="img/level2.png" alt="bg" />
-    <img id="bg3" src="img/level3.png" alt="bg" />
-    <img id="coin" src="img/coin.png" alt="bg" />
 
-    <img id="idle" src="img/Idle.png" alt="idle" />
-    <img id="idleLeft" src="img/idleLeft.png" alt="idle" />
-    <img id="run" src="img/Run.png" alt="run" />
-    <img id="runLeft" src="img/runLeft.png" alt="run" />
+  </div>
 
-    <img id="jump" src="img/Jump.png" alt="ump" />
-    <img id="jumpLeft" src="img/jumpLeft.png" alt="ump" />
+  <img id="bg" src="img/bg.png" alt="bg" />
 
-    <img id="take" src="img/Take Hit.png" alt="ump" />
-    <img id="takeLeft" src="img/Take left.png" alt="ump" />
+  <img id="bg1" src="img/level1.png" alt="bg" />
+  <img id="bg2" src="img/level2.png" alt="bg" />
+  <img id="bg3" src="img/level3.png" alt="bg" />
+  <img id="coin" src="img/coin.png" alt="bg" />
 
-    <footer>
-      <p>Scratchy made by Jakob Z</p>
-      <br />
-      <div class="sources">
-        <p>Sources</p>
-        <p>
-          Background from
-          <a
-            target="_blank"
-            href="https://raventale.itch.io/parallax-background"
-          >
-            raventale</a
-          >
-        </p>
-        <p>
-          Sound Effect from
-          <a
-            target="_blank"
-            href="https://pixabay.com/sound-effects/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6075"
-            >Pixabay</a
-          >
-        </p>
-        <p>
-          Tileset and Character from
-          <a
-            target="_blank"
-            href="https://luizmelo.itch.io/tiny-platformer-hills-asset-pack"
-          >
-            luizmelo</a
-          >
-        </p>
-        <p>
-          Keyboard buttons from
-          <a
-            target="_blank"
-            href="https://beamedeighth.itch.io/simplekeys-animated-pixel-keyboard-keys"
-            >beamedeighth</a
-          >
-        </p>
-      </div>
-    </footer>
+  <img id="idle" src="img/Idle.png" alt="idle" />
+  <img id="idleLeft" src="img/idleLeft.png" alt="idle" />
+  <img id="run" src="img/Run.png" alt="run" />
+  <img id="runLeft" src="img/runLeft.png" alt="run" />
 
-    <script type="module" src="js/app.js"></script>
-  </body>
+  <img id="jump" src="img/Jump.png" alt="ump" />
+  <img id="jumpLeft" src="img/jumpLeft.png" alt="ump" />
+
+  <img id="take" src="img/Take Hit.png" alt="ump" />
+  <img id="takeLeft" src="img/Take left.png" alt="ump" />
+
+  <footer>
+    <p>Scratchy made by Jakob Z</p>
+    <br />
+    <div class="sources">
+      <p>Sources</p>
+      <p>
+        Background from
+        <a target="_blank" href="https://raventale.itch.io/parallax-background">
+          raventale</a>
+      </p>
+      <p>
+        Sound Effect from
+        <a target="_blank"
+          href="https://pixabay.com/sound-effects/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6075">Pixabay</a>
+      </p>
+      <p>
+        Tileset and Character from
+        <a target="_blank" href="https://luizmelo.itch.io/tiny-platformer-hills-asset-pack">
+          luizmelo</a>
+      </p>
+      <p>
+        Keyboard buttons from
+        <a target="_blank" href="https://beamedeighth.itch.io/simplekeys-animated-pixel-keyboard-keys">beamedeighth</a>
+      </p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+
 </html>

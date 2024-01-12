@@ -1,4 +1,3 @@
-import { scale } from './app.js'
 import { Timer } from './Timer.js'
 
 export default class Text {
@@ -8,7 +7,7 @@ export default class Text {
   }
   render(text, x, y) {
     this.ctx.fillStyle = 'black'
-    const fontSize = 15 * scale
+    const fontSize = 15
     this.ctx.font = `${fontSize}px  Poppins`
     this.ctx.fillText(text, x, y)
   }

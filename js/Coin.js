@@ -28,6 +28,7 @@ export default class Coin {
   }
 
   update() {
+    this.draw()
     this.fpsCounter++
     if (this.fpsCounter % 8 === 0) {
       this.fpsCounter = 0
@@ -45,7 +46,7 @@ export default class Coin {
       x: Math.random() * (canvas.width - this.width),
       y: Math.random() * (canvas.height - this.height),
     }
-
+    console.log(canvas.width)
     for (let i = 0; i < tiles.length; i++) {
       if (collides(tempCoin, tiles[i])) {
         console.log('Coin collides with a tile!')
