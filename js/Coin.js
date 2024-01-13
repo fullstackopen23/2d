@@ -46,10 +46,10 @@ export default class Coin {
       x: Math.random() * (canvas.width - this.width),
       y: Math.random() * (canvas.height - this.height),
     }
-    console.log(canvas.width)
+    //console.log(canvas.width)
     for (let i = 0; i < tiles.length; i++) {
       if (collides(tempCoin, tiles[i])) {
-        console.log('Coin collides with a tile!')
+        //console.log('Coin collides with a tile!')
         this.randomCoordinates(tiles)
         break
       } else {

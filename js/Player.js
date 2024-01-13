@@ -50,7 +50,7 @@ export default class Player {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'd') {
         this.right = true
-        console.log(dBtn.attributes.src)
+        //console.log(dBtn.attributes.src)
         dBtn.src = 'img/controls/Db.png'
       } else if (e.key === 'a') {
         aBtn.src = 'img/controls/Ab.png'
@@ -243,14 +243,14 @@ export default class Player {
     tiles.forEach((tile) => {
       if (collides(horizontalRext, tile)) {
         if (this.vx > 0) {
-          console.log('collides on the right')
+          //console.log('collides on the right')
           const offset =
             this.x + this.width - this.hitbox.x - this.hitbox.width
           this.x = tile.x - this.width + offset - 0.01
         } else if (this.vx < 0) {
           const offset = this.hitbox.x - this.x
           this.x = tile.x + tile.width - offset + 0.01
-          console.log('collides on the left ')
+          //console.log('collides on the left ')
         }
         this.vx = 0
       }
@@ -263,14 +263,14 @@ export default class Player {
         if (this.vy > 0) {
           this.vy = 0
           this.isJumping = false
-          console.log('collides: top of tile')
+          //console.log('collides: top of tile')
           const offset = this.hitbox.y - this.y + this.hitbox.height
           this.y = tile.y - offset - 0.01
         }
         if (this.vy < 0) {
           this.vy = 0
           const offset = this.hitbox.y - this.y
-          console.log('collides: bottom of tile')
+          //console.log('collides: bottom of tile')
           this.y = tile.y + tile.height - offset + 0.01
         }
       }
