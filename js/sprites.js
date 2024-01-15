@@ -1,53 +1,50 @@
-const idleImg = document.getElementById('idle')
-const idleLeftImg = document.getElementById('idleLeft')
-const runImg = document.getElementById('run')
-const runLeftImg = document.getElementById('runLeft')
-const jumpImg = document.getElementById('jump')
-const jumpLeftImg = document.getElementById('jumpLeft')
-const takeImg = document.getElementById('take')
-const takeLeftImg = document.getElementById('takeLeft')
-const fallImg = document.getElementById('fall')
-const fallLeftImg = document.getElementById('fallLeft')
-
+const char2 = document.getElementById('char2')
+const char1 = document.getElementById('char1')
 export const sprites = {
+  char1: {
+    image: char1,
+  },
+  char2: {
+    image: char2,
+  },
   idleRight: {
-    image: idleImg,
-    frames: 4,
+    frameY: 0,
+    maxFrames: 4,
   },
   idleLeft: {
-    image: idleLeftImg,
-    frames: 4,
-  },
-  runRight: {
-    image: runImg,
-    frames: 6,
-  },
-  runLeft: {
-    image: runLeftImg,
-    frames: 6,
+    frameY: 1,
+    maxFrames: 4,
   },
   jumpRight: {
-    image: jumpImg,
-    frames: 2,
+    frameY: 2,
+    maxFrames: 2,
   },
   jumpLeft: {
-    image: jumpLeftImg,
-    frames: 2,
+    frameY: 3,
+    maxFrames: 2,
   },
-  take: {
-    image: takeImg,
-    frames: 4,
+  runRight: {
+    frameY: 4,
+    maxFrames: 6,
   },
-  takeLeft: {
-    image: takeLeftImg,
-    frames: 4,
+  runLeft: {
+    frameY: 5,
+    maxFrames: 6,
+  },
+  hitRight: {
+    frameY: 6,
+    maxFrames: 4,
+  },
+  hitLeft: {
+    frameY: 7,
+    maxFrames: 4,
   },
   fallRight: {
-    image: fallImg,
-    frames: 2,
+    frameY: 8,
+    maxFrames: 2,
   },
   fallLeft: {
-    image: fallLeftImg,
-    frames: 2,
+    frameY: 9,
+    maxFrames: 2,
   },
 }

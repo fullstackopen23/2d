@@ -58,6 +58,29 @@ header p {
   }
 }
 
+/* CHARACTERS */
+
+.characters img {
+  display: block;
+  background-color: var(--orange);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.characterContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+  color: var(--white);
+}
+
+.characters {
+  display: flex;
+  gap: 40px;
+}
+
 /* VOLUMNE CONTAINER */
 
 .volume {

@@ -1,6 +1,6 @@
 import { collides } from './utils.js'
-import { sprites } from './sprites.js'
 import { scale } from './app.js'
+import { sprites } from './sprites.js'
 const aBtn = document.querySelector('#a')
 const dBtn = document.querySelector('#d')
 const spaceBtn = document.querySelector('#space')
@@ -15,8 +15,7 @@ export default class Player {
     this.ctx = canvas.getContext('2d')
     this.vy = 0
     this.vx = 0
-    this.deltatime = 16
-    this.weight = 0.065 * this.deltatime
+    this.weight
     this.spriteWidth = 50
     this.spriteHeight = 50
     this.left = false
@@ -29,11 +28,13 @@ export default class Player {
       height: this.height - 25,
     }
     this.frameX = 0
+    this.frameY = 0
     this.fpsCounter = 0
     this.intervall = 50
-    this.currentSprite = sprites.idleRight
     this.lastDir = 'right'
     this.take = false
+    this.char = sprites.char1
+    this.currentSprite = sprites.idleRight
   }
 
   updateHitbox() {
@@ -172,10 +173,11 @@ export default class Player {
       this.hitbox.width,
       this.hitbox.height
     ) */
+
     this.ctx.drawImage(
-      this.currentSprite.image,
+      this.char.image,
       this.spriteWidth * this.frameX,
-      0,
+      this.spriteHeight * this.frameY,
       this.spriteWidth,
       this.spriteHeight,
       this.x,
@@ -200,62 +202,83 @@ export default class Player {
     if (this.right) {
       this.vx = 0.19 * deltatime
       this.lastDir = 'right'
+      if (!this.take) {
+        this.currentSprite = sprites.runRight
+        this.frameY = this.currentSprite.frameY
+      }
       if (!this.take) this.currentSprite = sprites.runRight
     }
     // going left
     else if (this.left) {
       this.vx = -0.19 * deltatime
       this.lastDir = 'left'
-      if (!this.take) this.currentSprite = sprites.runLeft
+      if (!this.take) {
+        this.currentSprite = sprites.runLeft
+        this.frameY = this.currentSprite.frameY
+      }
     } else {
-      // idle Left when
+      // idle Left
       if (this.lastDir === 'left' && !this.isJumping && !this.take) {
         this.currentSprite = sprites.idleLeft
+        this.frameY = this.currentSprite.frameY
       } else if (
+        // jumping left
         this.lastDir === 'left' &&
         this.isJumping &&
         !this.take &&
         this.vy <= 0
       ) {
         this.currentSprite = sprites.jumpLeft
+        this.frameY = this.currentSprite.frameY
       } else if (
+        // falling left
         this.lastDir === 'left' &&
         this.isJumping &&
         !this.take &&
         this.vy > 0
       ) {
         this.currentSprite = sprites.fallLeft
+        this.frameY = this.currentSprite.frameY
+        // idle Right
       } else if (
         this.lastDir === 'right' &&
         !this.isJumping &&
         !this.take
       ) {
         this.currentSprite = sprites.idleRight
+        this.frameY = this.currentSprite.frameY
       } else if (
+        // jump right
         this.lastDir === 'right' &&
         this.isJumping &&
         !this.take &&
         this.vy <= 0
       ) {
         this.currentSprite = sprites.jumpRight
+        this.frameY = this.currentSprite.frameY
       } else if (
+        // falling right
         this.lastDir === 'right' &&
         this.isJumping &&
         !this.take &&
         this.vy > 0
       ) {
         this.currentSprite = sprites.fallRight
+        this.frameY = this.currentSprite.frameY
       } else {
         this.currentSprite = sprites.idleRight
+        this.frameY = this.currentSprite.frameY
       }
       this.vx = 0
     }
 
     if (this.take) {
       if (this.lastDir === 'left') {
-        this.currentSprite = sprites.takeLeft
+        this.currentSprite = sprites.hitLeft
+        this.frameY = this.currentSprite.frameY
       } else {
-        this.currentSprite = sprites.take
+        this.currentSprite = sprites.hitRight
+        this.frameY = this.currentSprite.frameY
       }
       setTimeout(() => {
         this.take = false
@@ -317,7 +340,7 @@ export default class Player {
 
     if (this.fpsCounter > this.intervall) {
       this.fpsCounter = 0
-      if (this.frameX >= this.currentSprite.frames - 1) {
+      if (this.frameX >= this.currentSprite.maxFrames - 1) {
         this.frameX = 0
       } else {
         this.frameX++

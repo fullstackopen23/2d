@@ -5,6 +5,7 @@ import Text from './Text.js'
 import Coin from './Coin.js'
 import { makeArray2D, collides, createTiles } from './utils.js'
 import { level } from './maps.js'
+import { sprites } from './sprites.js'
 
 // fetching the DOM
 const restartContainer = document.querySelector('.restart')
@@ -13,6 +14,8 @@ const canvasContainer = document.querySelector('.canvasContainer')
 const highScoreText = document.querySelector('#highscore')
 const restartBtn = document.getElementById('restartBtn')
 const volumeBtn = document.getElementById('volume')
+const char2Select = document.getElementById('char2Select')
+const char1Select = document.getElementById('char1Select')
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.querySelector('#canvas')
@@ -72,20 +75,20 @@ let tiles = [...border]
 let currentBackground
 
 restartBtn.addEventListener('click', () => {
-  gameover = false
   score = 0
   start = Date.now()
   restartContainer.classList.remove('active')
-  player.restart()
+
   tiles = [...border]
   lasttime = 0
   level.levelTwo.loaded = false
   level.levelThree.loaded = false
   level.levelFour.loaded = false
-
   createTiles(makeArray2D(level.levelOne.map), tiles)
   currentBackground = level.levelOne.image
   coin.randomCoordinates(tiles)
+  gameover = false
+  player.restart()
   animate(0)
 })
 
@@ -99,6 +102,13 @@ volumeBtn.addEventListener('click', (e) => {
   }
 })
 
+char2Select.addEventListener('click', () => {
+  player.char = sprites.char2
+})
+char1Select.addEventListener('click', () => {
+  player.char = sprites.char1
+})
+
 // init level1
 createTiles(makeArray2D(level.levelOne.map), tiles)
 currentBackground = level.levelOne.image
@@ -107,6 +117,7 @@ let start = Date.now()
 
 function animate(timestamp = 0) {
   let deltatime = timestamp - lasttime
+  player.weight = deltatime * 0.065
   lasttime = timestamp
   let seconds = ((Date.now() - start) / 1000).toFixed(1)
   ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -144,7 +155,7 @@ function animate(timestamp = 0) {
     level.levelFour.loaded = true
     coin.randomCoordinates(tiles)
     player.restart()
-  } else if (score >= 20) {
+  } else if (score >= 1) {
     gameover = true
   }
 
