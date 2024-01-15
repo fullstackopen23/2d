@@ -15,7 +15,8 @@ export default class Player {
     this.ctx = canvas.getContext('2d')
     this.vy = 0
     this.vx = 0
-    this.weight = 1
+    this.deltatime = 16
+    this.weight = 0.065 * this.deltatime
     this.spriteWidth = 50
     this.spriteHeight = 50
     this.left = false
@@ -33,7 +34,6 @@ export default class Player {
     this.currentSprite = sprites.idleRight
     this.lastDir = 'right'
     this.take = false
-    this.deltatime = 0
   }
 
   updateHitbox() {
@@ -95,7 +95,11 @@ export default class Player {
         e.key === 'ArrowLeft'
       ) {
         this.handleMoveLeft(e)
-      } else if (e.key === ' ' || e.key === 'ArrowUp') {
+      } else if (
+        e.key === ' ' ||
+        e.key === 'ArrowUp' ||
+        e.key.toLowerCase() === 'w'
+      ) {
         this.handleJump(e)
       }
     })
@@ -108,7 +112,11 @@ export default class Player {
         e.key === 'ArrowLeft'
       ) {
         this.handleMoveLeftUp(e)
-      } else if (e.key === ' ' || e.key === 'ArrowUp') {
+      } else if (
+        e.key === ' ' ||
+        e.key === 'ArrowUp' ||
+        e.key.toLowerCase() === 'w'
+      ) {
         this.handleJumpKeyup(e)
       }
     })
