@@ -5,21 +5,23 @@ import Text from './Text.js'
 import Coin from './Coin.js'
 import { makeArray2D, collides, createTiles } from './utils.js'
 import { level } from './maps.js'
-import { Timer } from './Timer.js'
 
 // fetching the DOM
 const restartContainer = document.querySelector('.restart')
 const timeText = document.querySelector('#time')
 const canvasContainer = document.querySelector('.canvasContainer')
 const highScoreText = document.querySelector('#highscore')
+const restartBtn = document.getElementById('restartBtn')
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.querySelector('#canvas')
 )
 const ctx = canvas.getContext('2d')
-export let scale = 1
 canvas.width = 320
 canvas.height = 320
+
+// scales the canvas and all the elements inside
+export let scale = 1
 
 window.addEventListener('resize', resize)
 window.addEventListener('load', resize)
@@ -29,10 +31,11 @@ function resize() {
     scale = 0.8
   } else if (window.innerWidth < 600) {
     scale = 0.9
+  } else if (window.innerWidth < 1000) {
+    scale = 1.5
   } else {
-    scale = 1
+    scale = 2
   }
-
   canvas.width = 320 * scale
   canvas.height = 320 * scale
   canvas.style.width = 320 * scale + 'px'
@@ -40,26 +43,24 @@ function resize() {
   canvasContainer.style.width = canvas.width + 'px'
 }
 
-// init
+// init && loads highscore from local storage
 let score = 0
 let storage = {
   highscore: 0,
 }
-
+let lasttime = 0
 if (localStorage.getItem('highscore')) {
   storage.highscore = JSON.parse(localStorage.getItem('highscore'))
   highScoreText.innerHTML =
     'Your Highscore: ' + storage.highscore + 's'
 }
-
-const coinAudio = new Audio('sounds/coin.mp3')
 let gameover = false
+const coinAudio = new Audio('sounds/coin.mp3')
 const player = new Player(canvas)
 player.setupMovement()
 player.restart()
 const coin = new Coin()
 const text = new Text()
-const timer = new Timer()
 const border = [
   new Tiles(320, 0, 15, canvas.height),
   new Tiles(0, -10, canvas.width, 10),
@@ -68,41 +69,46 @@ const border = [
 let tiles = [...border]
 let currentBackground
 
-const restartBtn = document.getElementById('restartBtn')
 restartBtn.addEventListener('click', () => {
   gameover = false
   score = 0
+  start = Date.now()
   restartContainer.classList.remove('active')
   player.restart()
-  timer.start()
   tiles = [...border]
-
+  lasttime = 0
   level.levelTwo.loaded = false
   level.levelThree.loaded = false
 
   createTiles(makeArray2D(level.levelOne.map), tiles)
   currentBackground = level.levelOne.image
   coin.randomCoordinates(tiles)
-  animate()
+  animate(0)
 })
 
 // init level1
 createTiles(makeArray2D(level.levelOne.map), tiles)
 currentBackground = level.levelOne.image
 coin.randomCoordinates(tiles)
-timer.start()
+let start = Date.now()
 
-function animate() {
+function animate(timestamp = 0) {
+  let deltatime = timestamp - lasttime
+  lasttime = timestamp
+  let seconds = ((Date.now() - start) / 1000).toFixed(1)
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
   ctx.save()
   ctx.scale(scale, scale)
+
   text.render('Score: ' + score, 240, 20)
-  text.render('Time: ' + timer.getTime() + 's', 10, 20)
+  text.render('Time: ' + seconds + 's', 10, 20)
   tiles.forEach((tile) => tile.draw())
   ctx.drawImage(currentBackground, 0, 0)
-  coin.update()
+  coin.update(deltatime)
+
   ctx.restore()
+  player.update(tiles, deltatime)
 
   if (score >= 5 && !level.levelTwo.loaded) {
     tiles = [...border]
@@ -118,7 +124,7 @@ function animate() {
     level.levelThree.loaded = true
     coin.randomCoordinates(tiles)
     player.restart()
-  } else if (score >= 15) {
+  } else if (score >= 1) {
     gameover = true
   }
 
@@ -126,32 +132,30 @@ function animate() {
     score++
     coin.randomCoordinates(tiles)
     player.take = true
-    coinAudio.play()
+    coinAudio.play().catch((err) => console.log(err))
     if (coinAudio.paused) {
-      coinAudio.play()
+      coinAudio.play((err) => console.log(err))
     } else {
       coinAudio.currentTime = 0
     }
   }
 
-  player.update(tiles)
-
   if (!gameover) {
     requestAnimationFrame(animate)
   } else {
-    timeText.innerHTML = 'Your time was: ' + timer.getTime() + 's'
-    if (timer.getTime() < storage.highscore) {
-      storage.highscore = timer.getTime()
-    } else if (!storage.highscore) {
-      storage.highscore = timer.getTime()
+    let endtime = ((Date.now() - start) / 1000).toFixed(1)
+    timeText.innerHTML = 'Your time was: ' + endtime + 's'
+
+    if (endtime < storage.highscore || !storage.highscore) {
+      storage.highscore = endtime
+      localStorage.setItem(
+        'highscore',
+        JSON.stringify(storage.highscore)
+      )
     }
-    localStorage.setItem(
-      'highscore',
-      JSON.stringify(storage.highscore)
-    )
     highScoreText.innerHTML =
       'Your Highscore: ' + storage.highscore + 's'
     restartContainer.classList.add('active')
   }
 }
-animate()
+animate(0)

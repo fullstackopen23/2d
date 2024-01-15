@@ -29,8 +29,9 @@ export default class Player {
     }
     this.frameX = 0
     this.fpsCounter = 0
+    this.intervall = 80
     this.currentSprite = sprites.idleRight
-    this.lastDir
+    this.lastDir = 'right'
     this.take = false
   }
 
@@ -48,14 +49,17 @@ export default class Player {
 
   setupMovement() {
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'd') {
+      if (e.key.toLowerCase() === 'd' || e.key === 'ArrowRight') {
         this.right = true
-        //console.log(dBtn.attributes.src)
+        //console.log(dBtn.attributes.src)a
         dBtn.src = 'img/controls/Db.png'
-      } else if (e.key === 'a') {
+      } else if (
+        e.key.toLowerCase() === 'a' ||
+        e.key === 'ArrowLeft'
+      ) {
         aBtn.src = 'img/controls/Ab.png'
         this.left = true
-      } else if (e.key === ' ') {
+      } else if (e.key === ' ' || e.key === 'ArrowUp') {
         spaceBtn.src = 'img/controls/SPACEb.png'
         e.preventDefault()
         if (!this.isJumping) {
@@ -66,13 +70,16 @@ export default class Player {
     })
 
     document.addEventListener('keyup', (e) => {
-      if (e.key === 'd') {
+      if (e.key.toLowerCase() === 'd' || e.key === 'ArrowRight') {
         this.right = false
         dBtn.src = 'img/controls/D.png'
-      } else if (e.key === 'a') {
+      } else if (
+        e.key.toLowerCase() === 'a' ||
+        e.key === 'ArrowLeft'
+      ) {
         this.left = false
         aBtn.src = 'img/controls/A.png'
-      } else if (e.key === ' ') {
+      } else if (e.key === ' ' || e.key === 'ArrowUp') {
         spaceBtn.src = 'img/controls/SPACE.png'
       }
     })
@@ -173,7 +180,7 @@ export default class Player {
     this.ctx.fillRect(this.x, this.y, this.width, this.height) */
   }
 
-  update(tiles) {
+  update(tiles, deltatime) {
     this.ctx.save()
     this.ctx.scale(scale, scale)
     this.draw()
@@ -181,12 +188,13 @@ export default class Player {
 
     this.updateHitbox()
     this.applyGravity()
+
     if (this.right) {
-      this.vx = 3
+      this.vx = 0.2 * deltatime
       this.lastDir = 'right'
       if (!this.take) this.currentSprite = sprites.runRight
     } else if (this.left) {
-      this.vx = -3
+      this.vx = -0.2 * deltatime
       this.lastDir = 'left'
       if (!this.take) this.currentSprite = sprites.runLeft
     } else {
@@ -280,12 +288,14 @@ export default class Player {
     this.y += this.vy
     this.updateHitbox()
     this.fpsCounter++
-    if (this.fpsCounter % 5 === 0) {
+    if (this.fpsCounter > this.intervall) {
       this.fpsCounter = 0
       this.frameX++
       if (this.frameX >= this.currentSprite.frames) {
         this.frameX = 0
       }
+    } else {
+      this.fpsCounter += deltatime
     }
   }
 

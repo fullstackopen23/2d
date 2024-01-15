@@ -1,17 +1,16 @@
 import { collides } from './utils.js'
-import { scale } from './app.js'
-
 const coinImg = document.getElementById('coin')
 
 export default class Coin {
   constructor() {
-    this.width = 16 * scale
-    this.height = 16 * scale
+    this.width = 16
+    this.height = 16
     this.x = -100
     this.y = -100
     this.ctx = canvas.getContext('2d')
     this.frameX = 0
     this.fpsCounter = 0
+    this.coinIntervall = 100
   }
   draw() {
     this.ctx.drawImage(
@@ -27,15 +26,16 @@ export default class Coin {
     )
   }
 
-  update() {
+  update(deltatime) {
     this.draw()
-    this.fpsCounter++
-    if (this.fpsCounter % 8 === 0) {
+    if (this.fpsCounter > this.coinIntervall) {
       this.fpsCounter = 0
       this.frameX++
       if (this.frameX >= 5) {
         this.frameX = 0
       }
+    } else {
+      this.fpsCounter += deltatime
     }
   }
 
@@ -43,13 +43,12 @@ export default class Coin {
     const tempCoin = {
       height: this.height,
       width: this.width,
-      x: Math.random() * (canvas.width - this.width),
-      y: Math.random() * (canvas.height - this.height),
+      x: Math.random() * (320 - this.width),
+      y: Math.random() * (320 - this.height),
     }
-    //console.log(canvas.width)
     for (let i = 0; i < tiles.length; i++) {
       if (collides(tempCoin, tiles[i])) {
-        //console.log('Coin collides with a tile!')
+        console.log('Coin collides with a tile!')
         this.randomCoordinates(tiles)
         break
       } else {
