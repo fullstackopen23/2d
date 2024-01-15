@@ -81,6 +81,7 @@ restartBtn.addEventListener('click', () => {
   lasttime = 0
   level.levelTwo.loaded = false
   level.levelThree.loaded = false
+  level.levelFour.loaded = false
 
   createTiles(makeArray2D(level.levelOne.map), tiles)
   currentBackground = level.levelOne.image
@@ -136,7 +137,14 @@ function animate(timestamp = 0) {
     level.levelThree.loaded = true
     coin.randomCoordinates(tiles)
     player.restart()
-  } else if (score >= 15) {
+  } else if (score >= 15 && !level.levelFour.loaded) {
+    tiles = [...border]
+    createTiles(makeArray2D(level.levelFour.map), tiles)
+    currentBackground = level.levelFour.image
+    level.levelFour.loaded = true
+    coin.randomCoordinates(tiles)
+    player.restart()
+  } else if (score >= 20) {
     gameover = true
   }
 
