@@ -1,13 +1,20 @@
-[] animation / timer too fast
-[y] make the canvas bigger
+// done
 [y] add arrow keys
-[] coin collection animation is confusing
+[y] make the canvas bigger
 [y] caps lock doesnt work
 [y] W for jump
-[] audio visuals
+[y] audio visuals
 
+
+// needs to be tested
+[<] animation / timer too fast
+
+
+// todo
 [] make collect animation to play again
-
-
 [] level 2 harder than level 3
 [] making jump/movement speed a difficulty
+
+
+// no priority
+[] coin collection animation is confusing

@@ -12,6 +12,7 @@ const timeText = document.querySelector('#time')
 const canvasContainer = document.querySelector('.canvasContainer')
 const highScoreText = document.querySelector('#highscore')
 const restartBtn = document.getElementById('restartBtn')
+const volumeBtn = document.getElementById('volume')
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.querySelector('#canvas')
@@ -34,7 +35,7 @@ function resize() {
   } else if (window.innerWidth < 1000) {
     scale = 1.5
   } else {
-    scale = 2
+    scale = 1.8
   }
   canvas.width = 320 * scale
   canvas.height = 320 * scale
@@ -56,6 +57,7 @@ if (localStorage.getItem('highscore')) {
 }
 let gameover = false
 const coinAudio = new Audio('sounds/coin.mp3')
+coinAudio.volume = 0.6
 const player = new Player(canvas)
 player.setupMovement()
 player.restart()
@@ -84,6 +86,16 @@ restartBtn.addEventListener('click', () => {
   currentBackground = level.levelOne.image
   coin.randomCoordinates(tiles)
   animate(0)
+})
+
+volumeBtn.addEventListener('click', (e) => {
+  if (volumeBtn.innerHTML.trim() === 'volume_up') {
+    volumeBtn.innerHTML = 'volume_off'
+    coinAudio.volume = 0
+  } else {
+    volumeBtn.innerHTML = 'volume_up'
+    coinAudio.volume = 0.6
+  }
 })
 
 // init level1
@@ -124,7 +136,7 @@ function animate(timestamp = 0) {
     level.levelThree.loaded = true
     coin.randomCoordinates(tiles)
     player.restart()
-  } else if (score >= 1) {
+  } else if (score >= 15) {
     gameover = true
   }
 

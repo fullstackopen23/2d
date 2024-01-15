@@ -29,10 +29,11 @@ export default class Player {
     }
     this.frameX = 0
     this.fpsCounter = 0
-    this.intervall = 80
+    this.intervall = 50
     this.currentSprite = sprites.idleRight
     this.lastDir = 'right'
     this.take = false
+    this.deltatime = 0
   }
 
   updateHitbox() {
@@ -47,113 +48,111 @@ export default class Player {
     this.vx = 0
   }
 
+  handleJump(e) {
+    e.preventDefault()
+    if (!this.isJumping) {
+      this.vy = this.vy - 0.95 * this.deltatime
+      this.isJumping = true
+      spaceBtn.src = 'img/controls/SPACEb.png'
+    }
+  }
+
+  handleJumpKeyup(e) {
+    e.preventDefault()
+    spaceBtn.src = 'img/controls/SPACE.png'
+  }
+
+  handleMoveRight(e) {
+    e.preventDefault()
+    this.right = true
+    dBtn.src = 'img/controls/Db.png'
+  }
+
+  handleMoveRightUp(e) {
+    e.preventDefault()
+    this.right = false
+    dBtn.src = 'img/controls/D.png'
+  }
+
+  handleMoveLeft(e) {
+    e.preventDefault()
+    aBtn.src = 'img/controls/Ab.png'
+    this.left = true
+  }
+
+  handleMoveLeftUp(e) {
+    e.preventDefault()
+    this.left = false
+    aBtn.src = 'img/controls/A.png'
+  }
+
   setupMovement() {
     document.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'd' || e.key === 'ArrowRight') {
-        this.right = true
-        //console.log(dBtn.attributes.src)a
-        dBtn.src = 'img/controls/Db.png'
+        this.handleMoveRight(e)
       } else if (
         e.key.toLowerCase() === 'a' ||
         e.key === 'ArrowLeft'
       ) {
-        aBtn.src = 'img/controls/Ab.png'
-        this.left = true
+        this.handleMoveLeft(e)
       } else if (e.key === ' ' || e.key === 'ArrowUp') {
-        spaceBtn.src = 'img/controls/SPACEb.png'
-        e.preventDefault()
-        if (!this.isJumping) {
-          this.vy = this.vy - 17
-          this.isJumping = true
-        }
+        this.handleJump(e)
       }
     })
 
     document.addEventListener('keyup', (e) => {
       if (e.key.toLowerCase() === 'd' || e.key === 'ArrowRight') {
-        this.right = false
-        dBtn.src = 'img/controls/D.png'
+        this.handleMoveRightUp(e)
       } else if (
         e.key.toLowerCase() === 'a' ||
         e.key === 'ArrowLeft'
       ) {
-        this.left = false
-        aBtn.src = 'img/controls/A.png'
+        this.handleMoveLeftUp(e)
       } else if (e.key === ' ' || e.key === 'ArrowUp') {
-        spaceBtn.src = 'img/controls/SPACE.png'
+        this.handleJumpKeyup(e)
       }
     })
 
+    //jumping
     spaceBtn.addEventListener('touchstart', (e) => {
-      e.preventDefault()
-      if (!this.isJumping) {
-        this.vy = this.vy - 17
-        this.isJumping = true
-        spaceBtn.src = 'img/controls/SPACEb.png'
-      }
+      this.handleJump(e)
     })
-
-    spaceBtn.addEventListener('mouseup', (e) => {
-      e.preventDefault()
-      spaceBtn.src = 'img/controls/SPACE.png'
-    })
-
-    spaceBtn.addEventListener('mousedown', (e) => {
-      e.preventDefault()
-      if (!this.isJumping) {
-        this.vy = this.vy - 17
-        this.isJumping = true
-        spaceBtn.src = 'img/controls/SPACEb.png'
-      }
-    })
-
     spaceBtn.addEventListener('touchend', (e) => {
-      e.preventDefault()
-      spaceBtn.src = 'img/controls/SPACE.png'
+      this.handleJumpKeyup(e)
+    })
+    spaceBtn.addEventListener('mousedown', (e) => {
+      this.handleJump(e)
+    })
+    spaceBtn.addEventListener('mouseup', (e) => {
+      this.handleJumpKeyup(e)
     })
 
-    aBtn.addEventListener('touchstart', (e) => {
-      e.preventDefault()
-      this.left = true
-      aBtn.src = 'img/controls/Ab.png'
-    })
-    aBtn.addEventListener('touchend', (e) => {
-      e.preventDefault()
-      this.left = false
-      aBtn.src = 'img/controls/A.png'
-    })
-
-    aBtn.addEventListener('mousedown', (e) => {
-      e.preventDefault()
-      this.left = true
-      aBtn.src = 'img/controls/Ab.png'
-    })
-
-    aBtn.addEventListener('mouseup', (e) => {
-      e.preventDefault()
-      this.left = false
-      aBtn.src = 'img/controls/A.png'
-    })
-
+    //move right
     dBtn.addEventListener('touchstart', (e) => {
-      e.preventDefault()
-      this.right = true
-      dBtn.src = 'img/controls/Db.png'
+      this.handleMoveRight(e)
     })
     dBtn.addEventListener('touchend', (e) => {
-      e.preventDefault()
-      this.right = false
-      dBtn.src = 'img/controls/D.png'
+      this.handleMoveRightUp(e)
     })
     dBtn.addEventListener('mousedown', (e) => {
-      e.preventDefault()
-      this.right = true
-      dBtn.src = 'img/controls/Db.png'
+      this.handleMoveRight(e)
     })
     dBtn.addEventListener('mouseup', (e) => {
-      e.preventDefault()
-      this.right = false
-      dBtn.src = 'img/controls/D.png'
+      this.handleMoveRightUp(e)
+    })
+
+    //move left
+    aBtn.addEventListener('touchstart', (e) => {
+      this.handleMoveLeft(e)
+    })
+    aBtn.addEventListener('touchend', (e) => {
+      this.handleMoveLeftUp(e)
+    })
+    aBtn.addEventListener('mousedown', (e) => {
+      this.handleMoveLeft(e)
+    })
+    aBtn.addEventListener('mouseup', (e) => {
+      this.handleMoveLeftUp(e)
     })
   }
 
@@ -181,6 +180,7 @@ export default class Player {
   }
 
   update(tiles, deltatime) {
+    this.deltatime = deltatime
     this.ctx.save()
     this.ctx.scale(scale, scale)
     this.draw()
@@ -188,24 +188,35 @@ export default class Player {
 
     this.updateHitbox()
     this.applyGravity()
-
+    // going right
     if (this.right) {
-      this.vx = 0.2 * deltatime
+      this.vx = 0.19 * deltatime
       this.lastDir = 'right'
       if (!this.take) this.currentSprite = sprites.runRight
-    } else if (this.left) {
-      this.vx = -0.2 * deltatime
+    }
+    // going left
+    else if (this.left) {
+      this.vx = -0.19 * deltatime
       this.lastDir = 'left'
       if (!this.take) this.currentSprite = sprites.runLeft
     } else {
+      // idle Left when
       if (this.lastDir === 'left' && !this.isJumping && !this.take) {
         this.currentSprite = sprites.idleLeft
       } else if (
         this.lastDir === 'left' &&
         this.isJumping &&
-        !this.take
+        !this.take &&
+        this.vy <= 0
       ) {
         this.currentSprite = sprites.jumpLeft
+      } else if (
+        this.lastDir === 'left' &&
+        this.isJumping &&
+        !this.take &&
+        this.vy > 0
+      ) {
+        this.currentSprite = sprites.fallLeft
       } else if (
         this.lastDir === 'right' &&
         !this.isJumping &&
@@ -215,9 +226,17 @@ export default class Player {
       } else if (
         this.lastDir === 'right' &&
         this.isJumping &&
-        !this.take
+        !this.take &&
+        this.vy <= 0
       ) {
         this.currentSprite = sprites.jumpRight
+      } else if (
+        this.lastDir === 'right' &&
+        this.isJumping &&
+        !this.take &&
+        this.vy > 0
+      ) {
+        this.currentSprite = sprites.fallRight
       } else {
         this.currentSprite = sprites.idleRight
       }
@@ -287,12 +306,13 @@ export default class Player {
     this.x += this.vx
     this.y += this.vy
     this.updateHitbox()
-    this.fpsCounter++
+
     if (this.fpsCounter > this.intervall) {
       this.fpsCounter = 0
-      this.frameX++
-      if (this.frameX >= this.currentSprite.frames) {
+      if (this.frameX >= this.currentSprite.frames - 1) {
         this.frameX = 0
+      } else {
+        this.frameX++
       }
     } else {
       this.fpsCounter += deltatime
