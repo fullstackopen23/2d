@@ -21,6 +21,7 @@
 </head>
 
 <body>
+
   <header>
     <h1>Scratchy</h1>
     <div class="headerInfo">
@@ -38,13 +39,19 @@
       </span>
     </div>
 
-    <canvas id="canvas"> </canvas>
+    <div class="canvasBorder">
+      <canvas id="canvas"> </canvas>
 
-    <div class="restart">
-      <p>Gameover</p>
-      <p id="time"></p>
-      <button id="restartBtn">Restart</button>
+      <input class="active" id="startBtn" type="image" src="/img/menu/play.png" alt="play button">
+
+      <div class="restart">
+        <p><b>Gameover</b></p>
+        <p id="time"></p>
+        <input id="restartBtn" type="image" src="img/menu/restart.png" alt="restart">
+      </div>
     </div>
+
+
 
     <div class="controls">
       <div class="ad">

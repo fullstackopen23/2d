@@ -15,7 +15,7 @@ export default class Player {
     this.ctx = canvas.getContext('2d')
     this.vy = 0
     this.vx = 0
-    this.weight
+    this.weight = 1
     this.spriteWidth = 50
     this.spriteHeight = 50
     this.left = false

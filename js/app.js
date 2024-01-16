@@ -16,6 +16,8 @@ const restartBtn = document.getElementById('restartBtn')
 const volumeBtn = document.getElementById('volume')
 const char2Select = document.getElementById('char2Select')
 const char1Select = document.getElementById('char1Select')
+const canvasSize = document.querySelector('.canvasBorder')
+const startBtn = document.getElementById('startBtn')
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.querySelector('#canvas')
@@ -45,6 +47,8 @@ function resize() {
   canvas.style.width = 320 * scale + 'px'
   canvas.style.height = 320 * scale + 'px'
   canvasContainer.style.width = canvas.width + 'px'
+  canvasSize.style.height = canvas.height + 'px'
+  canvasSize.style.width = canvas.width + 'px'
 }
 
 // init && loads highscore from local storage
@@ -76,11 +80,10 @@ let currentBackground
 
 restartBtn.addEventListener('click', () => {
   score = 0
-  start = Date.now()
+  startTime = Date.now()
   restartContainer.classList.remove('active')
-
-  tiles = [...border]
   lasttime = 0
+  tiles = [...border]
   level.levelTwo.loaded = false
   level.levelThree.loaded = false
   level.levelFour.loaded = false
@@ -95,9 +98,10 @@ restartBtn.addEventListener('click', () => {
 volumeBtn.addEventListener('click', (e) => {
   if (volumeBtn.innerHTML.trim() === 'volume_up') {
     volumeBtn.innerHTML = 'volume_off'
-    coinAudio.volume = 0
+    coinAudio.muted = true
   } else {
     volumeBtn.innerHTML = 'volume_up'
+    coinAudio.muted = false
     coinAudio.volume = 0.6
   }
 })
@@ -113,13 +117,22 @@ char1Select.addEventListener('click', () => {
 createTiles(makeArray2D(level.levelOne.map), tiles)
 currentBackground = level.levelOne.image
 coin.randomCoordinates(tiles)
-let start = Date.now()
 
-function animate(timestamp = 0) {
+startBtn.addEventListener('click', (e) => {
+  e.target.classList.toggle('active')
+  animate(0)
+  startTime = Date.now()
+})
+
+let startTime = Date.now()
+
+function animate(timestamp) {
   let deltatime = timestamp - lasttime
+  if (deltatime > 200) deltatime = 16
   player.weight = deltatime * 0.065
   lasttime = timestamp
-  let seconds = ((Date.now() - start) / 1000).toFixed(1)
+
+  let seconds = ((Date.now() - startTime) / 1000).toFixed(1)
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
   ctx.save()
@@ -155,7 +168,7 @@ function animate(timestamp = 0) {
     level.levelFour.loaded = true
     coin.randomCoordinates(tiles)
     player.restart()
-  } else if (score >= 1) {
+  } else if (score >= 20) {
     gameover = true
   }
 
@@ -174,7 +187,7 @@ function animate(timestamp = 0) {
   if (!gameover) {
     requestAnimationFrame(animate)
   } else {
-    let endtime = ((Date.now() - start) / 1000).toFixed(1)
+    let endtime = ((Date.now() - startTime) / 1000).toFixed(1)
     timeText.innerHTML = 'Your time was: ' + endtime + 's'
 
     if (endtime < storage.highscore || !storage.highscore) {
@@ -189,4 +202,3 @@ function animate(timestamp = 0) {
     restartContainer.classList.add('active')
   }
 }
-animate(0)
