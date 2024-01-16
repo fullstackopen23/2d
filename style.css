@@ -100,6 +100,14 @@ header p {
 
 /* MAIN CANVAS */
 
+.label {
+  display: block;
+  position: absolute;
+  width: 100.1%;
+  left: -0.1px;
+  top: -90px;
+}
+
 #startBtn {
   position: absolute;
   display: none;

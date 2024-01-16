@@ -18,6 +18,7 @@ const char2Select = document.getElementById('char2Select')
 const char1Select = document.getElementById('char1Select')
 const canvasSize = document.querySelector('.canvasBorder')
 const startBtn = document.getElementById('startBtn')
+const levelLavel = document.querySelector('.label')
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.querySelector('#canvas')
@@ -90,6 +91,8 @@ restartBtn.addEventListener('click', () => {
   createTiles(makeArray2D(level.levelOne.map), tiles)
   currentBackground = level.levelOne.image
   coin.randomCoordinates(tiles)
+  levelLavel.src = 'img/menu/labellevel1.png'
+
   gameover = false
   player.restart()
   animate(0)
@@ -117,6 +120,7 @@ char1Select.addEventListener('click', () => {
 createTiles(makeArray2D(level.levelOne.map), tiles)
 currentBackground = level.levelOne.image
 coin.randomCoordinates(tiles)
+levelLavel.src = 'img/menu/labellevel1.png'
 
 startBtn.addEventListener('click', (e) => {
   e.target.classList.toggle('active')
@@ -153,6 +157,8 @@ function animate(timestamp) {
     currentBackground = level.levelTwo.image
     level.levelTwo.loaded = true
     coin.randomCoordinates(tiles)
+    levelLavel.src = 'img/menu/labellevel2.png'
+
     player.restart()
   } else if (score >= 10 && !level.levelThree.loaded) {
     tiles = [...border]
@@ -160,12 +166,14 @@ function animate(timestamp) {
     currentBackground = level.levelThree.image
     level.levelThree.loaded = true
     coin.randomCoordinates(tiles)
+    levelLavel.src = 'img/menu/labellevel3.png'
     player.restart()
   } else if (score >= 15 && !level.levelFour.loaded) {
     tiles = [...border]
     createTiles(makeArray2D(level.levelFour.map), tiles)
     currentBackground = level.levelFour.image
     level.levelFour.loaded = true
+    levelLavel.src = 'img/menu/labellevel4.png'
     coin.randomCoordinates(tiles)
     player.restart()
   } else if (score >= 20) {
