@@ -18,7 +18,8 @@ const char2Select = document.getElementById('char2Select')
 const char1Select = document.getElementById('char1Select')
 const canvasSize = document.querySelector('.canvasBorder')
 const startBtn = document.getElementById('startBtn')
-const levelLavel = document.querySelector('.label')
+const pauseBtn = document.getElementById('pauseBtn')
+const menu = document.querySelector('.menu')
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.querySelector('#canvas')
@@ -64,6 +65,7 @@ if (localStorage.getItem('highscore')) {
     'Your Highscore: ' + storage.highscore + 's'
 }
 let gameover = false
+let pause = false
 const coinAudio = new Audio('sounds/coin.mp3')
 coinAudio.volume = 0.6
 const player = new Player(canvas)
@@ -78,6 +80,9 @@ const border = [
 ]
 let tiles = [...border]
 let currentBackground
+let timeRef = null
+let timePaused = 0
+let started = false
 
 restartBtn.addEventListener('click', () => {
   score = 0
@@ -91,8 +96,6 @@ restartBtn.addEventListener('click', () => {
   createTiles(makeArray2D(level.levelOne.map), tiles)
   currentBackground = level.levelOne.image
   coin.randomCoordinates(tiles)
-  levelLavel.src = 'img/menu/labellevel1.png'
-
   gameover = false
   player.restart()
   animate(0)
@@ -120,12 +123,38 @@ char1Select.addEventListener('click', () => {
 createTiles(makeArray2D(level.levelOne.map), tiles)
 currentBackground = level.levelOne.image
 coin.randomCoordinates(tiles)
-levelLavel.src = 'img/menu/labellevel1.png'
 
 startBtn.addEventListener('click', (e) => {
   e.target.classList.toggle('active')
+  started = true
+  gameover = false
   animate(0)
   startTime = Date.now()
+})
+
+pauseBtn.addEventListener('click', (e) => {
+  if (gameover && started) return
+  if (!started) {
+    startBtn.classList.remove('active')
+  }
+  if (pause) {
+    if (!started) {
+      startBtn.classList.add('active')
+    } else {
+      lasttime = 0
+      animate(0)
+      timePaused = Date.now() - timeRef
+      startTime = startTime + timePaused
+    }
+    pause = false
+    menu.classList.remove('active')
+  } else {
+    if (started) {
+      timeRef = Date.now()
+    }
+    pause = true
+    menu.classList.add('active')
+  }
 })
 
 let startTime = Date.now()
@@ -143,7 +172,7 @@ function animate(timestamp) {
   ctx.scale(scale, scale)
 
   text.render('Score: ' + score, 240, 20)
-  text.render('Time: ' + seconds + 's', 10, 20)
+  text.render('Time: ' + seconds + 's', 150, 20)
   tiles.forEach((tile) => tile.draw())
   ctx.drawImage(currentBackground, 0, 0)
   coin.update(deltatime)
@@ -157,7 +186,6 @@ function animate(timestamp) {
     currentBackground = level.levelTwo.image
     level.levelTwo.loaded = true
     coin.randomCoordinates(tiles)
-    levelLavel.src = 'img/menu/labellevel2.png'
 
     player.restart()
   } else if (score >= 10 && !level.levelThree.loaded) {
@@ -166,17 +194,15 @@ function animate(timestamp) {
     currentBackground = level.levelThree.image
     level.levelThree.loaded = true
     coin.randomCoordinates(tiles)
-    levelLavel.src = 'img/menu/labellevel3.png'
     player.restart()
   } else if (score >= 15 && !level.levelFour.loaded) {
     tiles = [...border]
     createTiles(makeArray2D(level.levelFour.map), tiles)
     currentBackground = level.levelFour.image
     level.levelFour.loaded = true
-    levelLavel.src = 'img/menu/labellevel4.png'
     coin.randomCoordinates(tiles)
     player.restart()
-  } else if (score >= 20) {
+  } else if (score >= 3) {
     gameover = true
   }
 
@@ -191,9 +217,11 @@ function animate(timestamp) {
       coinAudio.currentTime = 0
     }
   }
-
-  if (!gameover) {
+  console.log(pause)
+  if (!gameover && !pause) {
     requestAnimationFrame(animate)
+  } else if (pause) {
+    console.log('pause')
   } else {
     let endtime = ((Date.now() - startTime) / 1000).toFixed(1)
     timeText.innerHTML = 'Your time was: ' + endtime + 's'

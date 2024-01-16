@@ -44,11 +44,36 @@
     <div class="canvasBorder">
       <canvas id="canvas"> </canvas>
 
-      <img class="label" src="img/menu/labellevel1.png" alt="label level">
+      <input id="pauseBtn" type="image" src="img/menu/menu.png" alt="menu">
+
+      <div class="menu">
+
+        <img id="menuBg" src="img/menu/bg.png" alt="bg">
+        <div class="characterContainer">
+          <p>Choose your character</p>
+          <div class="characters">
+            <div class="char">
+              <p></p>
+              <img id="char1Select" class="charaSelect selected" src="img/char1.png" alt="">
+
+            </div>
+
+            <div class="char">
+              <p></p>
+              <img id="char2Select" class="charaSelect locked" src="img/char2.png" alt="">
+            </div>
+            <div class="char">
+              <p></p>
+              <img id="char3Select" class="charaSelect locked" src="img/char3.png" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
 
       <input class="active" id="startBtn" type="image" src="img/menu/play.png" alt="play button">
 
       <div class="restart">
+        <img src="img/menu/table.png" alt="tale">
         <p><b>Gameover</b></p>
         <p id="time"></p>
         <input id="restartBtn" type="image" src="img/menu/restart.png" alt="restart">
@@ -67,15 +92,7 @@
       </div>
     </div>
 
-    <div class="characterContainer">
-      <p>Choose your character</p>
-      <div class="characters">
 
-        <img id="char1Select" src="img/char1.png" alt="">
-        <img id="char2Select" src="img/char2.png" alt="">
-        <img id="char3Select" src="img/char3.png" alt="">
-      </div>
-    </div>
 
 
   </div>

@@ -52,8 +52,7 @@ export default class Player {
   handleJump(e) {
     e.preventDefault()
     if (!this.isJumping) {
-      this.vy = this.vy - 17
-      console.log(this.deltatime)
+      this.vy = this.vy - 1 * this.deltatime
       this.isJumping = true
       spaceBtn.src = 'img/controls/SPACEb.png'
     }
