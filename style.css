@@ -68,8 +68,9 @@ header p {
   display: none;
   top: 50%;
   left: 50%;
-  height: 75%;
-  width: 70%;
+  height: 70%;
+  width: 90%;
+  max-width: 400px;
   align-items: center;
   justify-content: center;
   transform: translate(-50%, -50%);
@@ -86,27 +87,40 @@ header p {
   left: 0;
   z-index: -1;
   width: 100%;
+  height: 100%;
 }
 
-.characters img {
+.char img {
   display: block;
   background-color: var(--orange);
   border-radius: 50%;
   cursor: pointer;
+  width: 44px;
 }
 
 .characterContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 40%;
-  text-align: center;
+  width: 90%;
+  gap: 20px;
   margin-bottom: 24px;
   color: var(--white);
+  font-size: 0.8rem;
+}
+
+@media (min-width: 550px) {
+  .characterContainer {
+    font-size: 1.1rem;
+  }
+
+  .characters img {
+    width: 60px;
+  }
 }
 
 .characters {
-  gap: 5px;
+  gap: 15px;
   display: flex;
 }
 

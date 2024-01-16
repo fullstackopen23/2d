@@ -156,7 +156,7 @@ function animate(timestamp) {
   ctx.scale(scale, scale)
 
   text.render('Score: ' + score, 240, 20)
-  text.render('Time: ' + seconds + 's', 150, 20)
+  text.render('Time: ' + seconds + 's', 120, 20)
   tiles.forEach((tile) => tile.draw())
   ctx.drawImage(currentBackground, 0, 0)
   coin.update(deltatime)
