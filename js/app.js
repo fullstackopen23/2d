@@ -17,7 +17,6 @@ const volumeBtn = document.getElementById('volume')
 const char2Select = document.getElementById('char2Select')
 const char1Select = document.getElementById('char1Select')
 const canvasSize = document.querySelector('.canvasBorder')
-const startBtn = document.getElementById('startBtn')
 const pauseBtn = document.getElementById('pauseBtn')
 const menu = document.querySelector('.menu')
 
@@ -82,7 +81,6 @@ let tiles = [...border]
 let currentBackground
 let timeRef = null
 let timePaused = 0
-let started = false
 
 restartBtn.addEventListener('click', () => {
   score = 0
@@ -124,40 +122,26 @@ createTiles(makeArray2D(level.levelOne.map), tiles)
 currentBackground = level.levelOne.image
 coin.randomCoordinates(tiles)
 
-startBtn.addEventListener('click', (e) => {
-  e.target.classList.toggle('active')
-  started = true
-  gameover = false
-  animate(0)
-  startTime = Date.now()
-})
-
 pauseBtn.addEventListener('click', (e) => {
-  if (gameover && started) return
-  if (!started) {
-    startBtn.classList.remove('active')
-  }
+  if (gameover) return
+
   if (pause) {
-    if (!started) {
-      startBtn.classList.add('active')
-    } else {
-      lasttime = 0
-      animate(0)
-      timePaused = Date.now() - timeRef
-      startTime = startTime + timePaused
-    }
     pause = false
+    lasttime = 0
+    animate(0)
+    timePaused = Date.now() - timeRef
+    startTime = startTime + timePaused
     menu.classList.remove('active')
   } else {
-    if (started) {
-      timeRef = Date.now()
-    }
     pause = true
+    timeRef = Date.now()
     menu.classList.add('active')
   }
 })
 
 let startTime = Date.now()
+startTime = Date.now()
+animate(0)
 
 function animate(timestamp) {
   let deltatime = timestamp - lasttime
@@ -217,11 +201,11 @@ function animate(timestamp) {
       coinAudio.currentTime = 0
     }
   }
-  console.log(pause)
+
   if (!gameover && !pause) {
     requestAnimationFrame(animate)
   } else if (pause) {
-    console.log('pause')
+    console.log({ pause })
   } else {
     let endtime = ((Date.now() - startTime) / 1000).toFixed(1)
     timeText.innerHTML = 'Your time was: ' + endtime + 's'
