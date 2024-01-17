@@ -16,7 +16,7 @@ export default class Player {
     this.ctx = canvas.getContext('2d')
     this.vy = 0
     this.vx = 0
-    this.weight = 1
+    this.weight
     this.spriteWidth = 50
     this.spriteHeight = 50
     this.left = false
@@ -53,7 +53,7 @@ export default class Player {
   handleJump(e) {
     e.preventDefault()
     if (!this.isJumping) {
-      this.vy = this.vy - this.deltatime
+      this.vy = this.vy - 16.5
       this.isJumping = true
       spaceBtn.src = 'img/controls/SPACEb.png'
     }
@@ -120,6 +120,7 @@ export default class Player {
         e.key.toLowerCase() === 'w'
       ) {
         this.handleJumpKeyup(e)
+        console.log(this)
       }
     })
 
@@ -192,6 +193,7 @@ export default class Player {
 
   update(tiles, deltatime) {
     this.deltatime = deltatime
+    this.weight = (deltatime * 1) / 16
     this.ctx.save()
     this.ctx.scale(scale, scale)
     this.draw()

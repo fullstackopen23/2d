@@ -164,7 +164,6 @@ function animate(timestamp) {
 
   let seconds = ((Date.now() - startTime) / 1000).toFixed(1)
   ctx.clearRect(0, 0, canvas.width, canvas.height)
-
   ctx.save()
   ctx.scale(scale, scale)
 
