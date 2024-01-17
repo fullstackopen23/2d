@@ -7,7 +7,12 @@
 * {
   padding: 0px;
   margin: 0px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
+}
+
+html {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -16,6 +21,8 @@ body {
   align-items: center;
   justify-content: space-between;
   min-height: 100vh;
+  overflow-x: hidden;
+
   background-color: var(--bg);
 }
 
@@ -42,7 +49,7 @@ header {
 }
 
 header h1 {
-  font-family: 'Bungee Spice', sans-serif;
+  font-family: "Bungee Spice", sans-serif;
   font-size: 2.6em;
   color: var(--orange);
 }
@@ -145,7 +152,7 @@ header p {
 }
 
 .material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
   cursor: pointer;
 }
 
@@ -194,7 +201,7 @@ header p {
 }
 
 .canvasContainer #canvas {
-  background-image: url('./img/bg.png');
+  background-image: url("./img/bg.png");
   background-size: cover;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   background-position: center;
@@ -302,7 +309,7 @@ footer {
   flex-direction: column;
   justify-content: center;
   color: var(--white);
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: #2e0847;
   width: 100%;
   padding: 20px;
