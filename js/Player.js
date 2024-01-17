@@ -23,8 +23,8 @@ export default class Player {
     this.right = false
     this.isJumping = false
     this.hitbox = {
-      x: this.x,
-      y: this.y,
+      x: this.x + 20,
+      y: this.y + 12,
       width: this.width - 40,
       height: this.height - 25,
     }
@@ -53,7 +53,7 @@ export default class Player {
   handleJump(e) {
     e.preventDefault()
     if (!this.isJumping) {
-      this.vy = this.vy - 16.5
+      this.vy = this.vy - 16.8
       this.isJumping = true
       spaceBtn.src = 'img/controls/SPACEb.png'
     }
@@ -120,7 +120,6 @@ export default class Player {
         e.key.toLowerCase() === 'w'
       ) {
         this.handleJumpKeyup(e)
-        console.log(this)
       }
     })
 
@@ -168,7 +167,7 @@ export default class Player {
   }
 
   draw() {
-    /* this.ctx.fillStyle = 'rgba(15, 165, 0, 0.8)'
+    /*  this.ctx.fillStyle = 'rgba(15, 165, 0, 0.8)'
     this.ctx.fillRect(
       this.hitbox.x,
       this.hitbox.y,
@@ -198,8 +197,8 @@ export default class Player {
     this.draw()
     this.ctx.restore()
 
-    this.updateHitbox()
     this.applyGravity(deltatime)
+
     // going right
     if (this.right) {
       this.vx = 0.19 * deltatime
@@ -289,7 +288,7 @@ export default class Player {
 
     let verticalRext = {
       x: this.hitbox.x,
-      y: this.hitbox.y + this.vy,
+      y: this.hitbox.y + this.vy * deltatime * (1 / 16),
       width: this.hitbox.width,
       height: this.hitbox.height,
     }

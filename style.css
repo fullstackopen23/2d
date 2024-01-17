@@ -112,6 +112,9 @@ header p {
   color: var(--white);
   font-size: 0.8rem;
 }
+#playBtn {
+  width: 34px;
+}
 
 @media (min-width: 550px) {
   .characterContainer {
@@ -121,15 +124,15 @@ header p {
   .char {
     width: 60px;
   }
+
+  #playBtn {
+    width: 50px;
+  }
 }
 
 .characters {
   gap: 15px;
   display: flex;
-}
-
-#playBtn {
-  width: 33px;
 }
 
 /* VOLUMNE CONTAINER */

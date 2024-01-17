@@ -182,7 +182,6 @@ function animate(timestamp) {
     currentBackground = level.levelTwo.image
     level.levelTwo.loaded = true
     coin.randomCoordinates(tiles)
-
     player.restart()
   } else if (score >= 10 && !level.levelThree.loaded) {
     tiles = [...border]
