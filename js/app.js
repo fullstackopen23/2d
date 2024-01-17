@@ -19,6 +19,7 @@ const char1Select = document.getElementById('char1Select')
 const canvasSize = document.querySelector('.canvasBorder')
 const pauseBtn = document.getElementById('pauseBtn')
 const menu = document.querySelector('.menu')
+const playBtn = document.getElementById('playBtn')
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.querySelector('#canvas')
@@ -112,9 +113,13 @@ volumeBtn.addEventListener('click', (e) => {
 
 char2Select.addEventListener('click', () => {
   player.char = sprites.char2
+  char2Select.classList.add('selected')
+  char1Select.classList.remove('selected')
 })
 char1Select.addEventListener('click', () => {
   player.char = sprites.char1
+  char1Select.classList.add('selected')
+  char2Select.classList.remove('selected')
 })
 
 // init level1
@@ -137,6 +142,15 @@ pauseBtn.addEventListener('click', (e) => {
     timeRef = Date.now()
     menu.classList.add('active')
   }
+})
+
+playBtn.addEventListener('click', () => {
+  pause = false
+  lasttime = 0
+  animate(0)
+  timePaused = Date.now() - timeRef
+  startTime = startTime + timePaused
+  menu.classList.remove('active')
 })
 
 let startTime = Date.now()
