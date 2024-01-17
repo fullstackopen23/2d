@@ -8,6 +8,7 @@ const spaceBtn = document.querySelector('#space')
 export default class Player {
   constructor(canvas) {
     this.x = 0
+    this.deltatime
     this.y = 10
     this.height = 60
     this.width = 60
@@ -52,7 +53,7 @@ export default class Player {
   handleJump(e) {
     e.preventDefault()
     if (!this.isJumping) {
-      this.vy = this.vy - 16
+      this.vy = this.vy - this.deltatime
       this.isJumping = true
       spaceBtn.src = 'img/controls/SPACEb.png'
     }
@@ -190,6 +191,7 @@ export default class Player {
   }
 
   update(tiles, deltatime) {
+    this.deltatime = deltatime
     this.ctx.save()
     this.ctx.scale(scale, scale)
     this.draw()
