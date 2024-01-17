@@ -7,10 +7,10 @@
 
 
 // needs to be tested
-[<] animation / timer too fast
 
 
 // todo
+[] animation / timer too fast
 [] make collect animation to play again
 [] level 2 harder than level 3
 [] making jump/movement speed a difficulty

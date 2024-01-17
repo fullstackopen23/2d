@@ -146,7 +146,6 @@ animate(0)
 function animate(timestamp) {
   let deltatime = timestamp - lasttime
   if (deltatime > 200) deltatime = 16
-  player.weight = deltatime * 0.065
   lasttime = timestamp
 
   let seconds = ((Date.now() - startTime) / 1000).toFixed(1)
@@ -186,7 +185,7 @@ function animate(timestamp) {
     level.levelFour.loaded = true
     coin.randomCoordinates(tiles)
     player.restart()
-  } else if (score >= 3) {
+  } else if (score >= 20) {
     gameover = true
   }
 

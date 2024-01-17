@@ -52,7 +52,7 @@ export default class Player {
   handleJump(e) {
     e.preventDefault()
     if (!this.isJumping) {
-      this.vy = this.vy - 1 * this.deltatime
+      this.vy = this.vy - 16
       this.isJumping = true
       spaceBtn.src = 'img/controls/SPACEb.png'
     }
@@ -190,14 +190,13 @@ export default class Player {
   }
 
   update(tiles, deltatime) {
-    this.deltatime = deltatime
     this.ctx.save()
     this.ctx.scale(scale, scale)
     this.draw()
     this.ctx.restore()
 
     this.updateHitbox()
-    this.applyGravity()
+    this.applyGravity(deltatime)
     // going right
     if (this.right) {
       this.vx = 0.19 * deltatime
@@ -319,16 +318,16 @@ export default class Player {
 
       if (collides(verticalRext, tile)) {
         if (this.vy > 0) {
+          //console.log('collides: top of tile')
           this.vy = 0
           this.isJumping = false
-          //console.log('collides: top of tile')
           const offset = this.hitbox.y - this.y + this.hitbox.height
           this.y = tile.y - offset - 0.01
         }
         if (this.vy < 0) {
+          //console.log('collides: bottom of tile')
           this.vy = 0
           const offset = this.hitbox.y - this.y
-          //console.log('collides: bottom of tile')
           this.y = tile.y + tile.height - offset + 0.01
         }
       }
@@ -350,7 +349,7 @@ export default class Player {
     }
   }
 
-  applyGravity() {
-    this.vy += this.weight
+  applyGravity(deltatime) {
+    this.vy += this.weight * deltatime * 0.072
   }
 }
