@@ -8,8 +8,8 @@ const spaceBtn = document.querySelector('#space')
 export default class Player {
   constructor(canvas) {
     this.x = 0
+    this.y = 50
     this.deltatime
-    this.y = 10
     this.height = 60
     this.width = 60
     this.canvas = canvas
@@ -45,7 +45,7 @@ export default class Player {
 
   restart() {
     this.x = 5
-    this.y = 10
+    this.y = 40
     this.vy = 0
     this.vx = 0
   }
@@ -285,6 +285,7 @@ export default class Player {
         this.take = false
       }, 700)
     }
+    this.updateHitbox()
 
     let verticalRext = {
       x: this.hitbox.x,
@@ -333,6 +334,10 @@ export default class Player {
           this.y = tile.y + tile.height - offset + 0.01
         }
       }
+    }
+
+    if (this.hitbox.y < 0) {
+      console.log('hu')
     }
 
     this.x += this.vx
