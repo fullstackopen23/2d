@@ -106,6 +106,10 @@ export default class Player {
       }
     })
 
+    document.addEventListener('touchstart', (e) => {
+      console.log(e.touches)
+    })
+
     document.addEventListener('keyup', (e) => {
       if (e.key.toLowerCase() === 'd' || e.key === 'ArrowRight') {
         this.handleMoveRightUp(e)
@@ -167,13 +171,13 @@ export default class Player {
   }
 
   draw() {
-    /*  this.ctx.fillStyle = 'rgba(15, 165, 0, 0.8)'
+    this.ctx.fillStyle = 'rgba(15, 165, 0, 0.8)'
     this.ctx.fillRect(
       this.hitbox.x,
       this.hitbox.y,
       this.hitbox.width,
       this.hitbox.height
-    ) */
+    )
 
     this.ctx.drawImage(
       this.char.image,
@@ -186,8 +190,8 @@ export default class Player {
       this.width,
       this.height
     )
-    /* this.ctx.fillStyle = 'rgba(15, 165, 0, 0.2)'
-    this.ctx.fillRect(this.x, this.y, this.width, this.height) */
+    this.ctx.fillStyle = 'rgba(15, 165, 0, 0.2)'
+    this.ctx.fillRect(this.x, this.y, this.width, this.height)
   }
 
   update(tiles, deltatime) {
@@ -302,20 +306,6 @@ export default class Player {
     }
 
     tiles.forEach((tile) => {
-      if (collides(horizontalRext, tile)) {
-        if (this.vx > 0) {
-          //console.log('collides on the right')
-          const offset =
-            this.x + this.width - this.hitbox.x - this.hitbox.width
-          this.x = tile.x - this.width + offset - 0.01
-        } else if (this.vx < 0) {
-          const offset = this.hitbox.x - this.x
-          this.x = tile.x + tile.width - offset + 0.01
-          //console.log('collides on the left ')
-        }
-        this.vx = 0
-      }
-
       if (collides(verticalRext, tile)) {
         if (this.vy > 0) {
           //console.log('collides: top of tile')
@@ -330,11 +320,23 @@ export default class Player {
         }
         this.vy = 0
       }
+      if (collides(horizontalRext, tile)) {
+        if (this.vx > 0) {
+          //console.log('collides on the right')
+          const offset =
+            this.x + this.width - this.hitbox.x - this.hitbox.width
+          this.x = tile.x - this.width + offset - 0.01
+        } else if (this.vx < 0) {
+          const offset = this.hitbox.x - this.x
+          this.x = tile.x + tile.width - offset + 0.01
+          //console.log('collides on the left ')
+        }
+        this.vx = 0
+      }
     })
 
     this.x += this.vx
     this.y += this.vy * deltatime * (1 / 16)
-    this.updateHitbox()
 
     if (this.fpsCounter > this.intervall) {
       this.fpsCounter = 0
@@ -349,6 +351,6 @@ export default class Player {
   }
 
   applyGravity(deltatime) {
-    this.vy += this.weight * deltatime * 0.072
+    this.vy += this.weight * deltatime * (1 / 16)
   }
 }
