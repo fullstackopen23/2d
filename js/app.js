@@ -20,7 +20,6 @@ const canvasSize = document.querySelector('.canvasBorder')
 const pauseBtn = document.getElementById('pauseBtn')
 const menu = document.querySelector('.menu')
 const playBtn = document.getElementById('playBtn')
-const log = document.querySelector('.log')
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.querySelector('#canvas')
@@ -161,13 +160,15 @@ let startTime = Date.now()
 startTime = Date.now()
 animate(0)
 
-function animate(timestamp) {
+function animate(timestamp = 0) {
   let deltatime = timestamp - lasttime
   if (deltatime > 200) deltatime = 16
   lasttime = timestamp
-
   let seconds = ((Date.now() - startTime) / 1000).toFixed(1)
+
   ctx.clearRect(0, 0, canvas.width, canvas.height)
+  player.update(tiles, deltatime)
+
   ctx.save()
   ctx.scale(scale, scale)
   text.render('Score: ' + score, 240, 20)
@@ -175,8 +176,6 @@ function animate(timestamp) {
   ctx.drawImage(currentBackground, 0, 0)
   coin.update(deltatime)
   ctx.restore()
-
-  log.innerHTML = 'Player.vy: ' + player.vy + ' - ' + player.y
 
   if (score >= 5 && !level.levelTwo.loaded) {
     tiles = [...border]
@@ -203,15 +202,13 @@ function animate(timestamp) {
     gameover = true
   }
 
-  player.update(tiles, deltatime)
-
   if (collides(player.hitbox, coin)) {
     score++
     coin.randomCoordinates(tiles)
     player.take = true
     coinAudio.play().catch((err) => console.log(err))
     if (coinAudio.paused) {
-      coinAudio.play((err) => console.log(err))
+      coinAudio.play().catch((err) => console.log(err))
     } else {
       coinAudio.currentTime = 0
     }

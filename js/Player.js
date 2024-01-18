@@ -4,6 +4,7 @@ import { sprites } from './sprites.js'
 const aBtn = document.querySelector('#a')
 const dBtn = document.querySelector('#d')
 const spaceBtn = document.querySelector('#space')
+const log = document.querySelector('.log')
 
 export default class Player {
   constructor(canvas) {
@@ -104,10 +105,6 @@ export default class Player {
       ) {
         this.handleJump(e)
       }
-    })
-
-    document.addEventListener('touchstart', (e) => {
-      console.log(e.touches)
     })
 
     document.addEventListener('keyup', (e) => {
@@ -305,31 +302,37 @@ export default class Player {
       height: this.hitbox.height,
     }
 
-    tiles.forEach((tile) => {
+    for (let i = 0; i < tiles.length; i++) {
+      const tile = tiles[i]
       if (collides(verticalRext, tile)) {
-        if (this.vy > 0) {
+        console.log(this.vy)
+        if (this.vy >= 0) {
           //console.log('collides: top of tile')
           this.isJumping = false
           const offset = this.hitbox.y - this.y + this.hitbox.height
-          this.y = tile.y - offset - 0.01
+          this.y = tile.y - offset - 0.02
         }
         if (this.vy < 0) {
           //console.log('collides: bottom of tile')
           const offset = this.hitbox.y - this.y
-          this.y = tile.y + tile.height - offset + 0.01
+          this.y = tile.y + tile.height - offset + 0.02
         }
         this.vy = 0
+        break
       }
+    }
+
+    tiles.forEach((tile) => {
       if (collides(horizontalRext, tile)) {
         if (this.vx > 0) {
           //console.log('collides on the right')
           const offset =
             this.x + this.width - this.hitbox.x - this.hitbox.width
-          this.x = tile.x - this.width + offset - 0.01
+          this.x = tile.x - this.width + offset - 0.02
         } else if (this.vx < 0) {
-          const offset = this.hitbox.x - this.x
-          this.x = tile.x + tile.width - offset + 0.01
           //console.log('collides on the left ')
+          const offset = this.hitbox.x - this.x
+          this.x = tile.x + tile.width - offset + 0.02
         }
         this.vx = 0
       }
