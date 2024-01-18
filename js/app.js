@@ -20,6 +20,7 @@ const canvasSize = document.querySelector('.canvasBorder')
 const pauseBtn = document.getElementById('pauseBtn')
 const menu = document.querySelector('.menu')
 const playBtn = document.getElementById('playBtn')
+const log = document.querySelector('.log')
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.querySelector('#canvas')
@@ -31,8 +32,8 @@ canvas.height = 320
 // scales the canvas and all the elements inside
 export let scale = 1
 
-/* window.addEventListener('resize', resize)
-window.addEventListener('load', resize) */
+window.addEventListener('resize', resize)
+window.addEventListener('load', resize)
 
 function resize() {
   if (window.innerWidth < 250) {
@@ -174,6 +175,8 @@ function animate(timestamp) {
   ctx.drawImage(currentBackground, 0, 0)
   coin.update(deltatime)
   ctx.restore()
+
+  log.innerHTML = 'Player.vy: ' + player.vy + ' - ' + player.y
 
   if (score >= 5 && !level.levelTwo.loaded) {
     tiles = [...border]

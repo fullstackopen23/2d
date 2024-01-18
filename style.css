@@ -6,6 +6,7 @@
 
 * {
   padding: 0px;
+  image-rendering: pixelated;
   margin: 0px;
   font-family: 'Poppins', sans-serif;
 }
