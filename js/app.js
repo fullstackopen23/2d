@@ -31,8 +31,8 @@ canvas.height = 320
 // scales the canvas and all the elements inside
 export let scale = 1
 
-window.addEventListener('resize', resize)
-window.addEventListener('load', resize)
+/* window.addEventListener('resize', resize)
+window.addEventListener('load', resize) */
 
 function resize() {
   if (window.innerWidth < 250) {

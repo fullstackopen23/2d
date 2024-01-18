@@ -285,6 +285,7 @@ export default class Player {
         this.take = false
       }, 700)
     }
+
     this.updateHitbox()
 
     let verticalRext = {
@@ -314,31 +315,22 @@ export default class Player {
         }
         this.vx = 0
       }
-    })
-
-    for (let index = 0; index < tiles.length; index++) {
-      const tile = tiles[index]
 
       if (collides(verticalRext, tile)) {
         if (this.vy > 0) {
           //console.log('collides: top of tile')
-          this.vy = 0
           this.isJumping = false
           const offset = this.hitbox.y - this.y + this.hitbox.height
           this.y = tile.y - offset - 0.01
         }
         if (this.vy < 0) {
           //console.log('collides: bottom of tile')
-          this.vy = 0
           const offset = this.hitbox.y - this.y
           this.y = tile.y + tile.height - offset + 0.01
         }
+        this.vy = 0
       }
-    }
-
-    if (this.hitbox.y < 0) {
-      console.log('hu')
-    }
+    })
 
     this.x += this.vx
     this.y += this.vy * deltatime * (1 / 16)
