@@ -168,14 +168,14 @@ export default class Player {
   }
 
   draw() {
-    this.ctx.fillStyle = 'rgba(15, 165, 0, 0.8)'
+    /* this.ctx.fillStyle = 'rgba(15, 165, 0, 1)'
     this.ctx.fillRect(
       this.hitbox.x,
       this.hitbox.y,
       this.hitbox.width,
       this.hitbox.height
     )
-
+ */
     this.ctx.drawImage(
       this.char.image,
       this.spriteWidth * this.frameX,
@@ -187,8 +187,8 @@ export default class Player {
       this.width,
       this.height
     )
-    this.ctx.fillStyle = 'rgba(15, 165, 0, 0.2)'
-    this.ctx.fillRect(this.x, this.y, this.width, this.height)
+    /* this.ctx.fillStyle = 'rgba(15, 165, 0, 0.2)'
+    this.ctx.fillRect(this.x, this.y, this.width, this.height) */
   }
 
   update(tiles, deltatime) {
@@ -305,7 +305,6 @@ export default class Player {
     for (let i = 0; i < tiles.length; i++) {
       const tile = tiles[i]
       if (collides(verticalRext, tile)) {
-        console.log(this.vy)
         if (this.vy >= 0) {
           //console.log('collides: top of tile')
           this.isJumping = false

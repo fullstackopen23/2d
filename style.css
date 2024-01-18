@@ -82,11 +82,11 @@ header p {
   align-items: center;
   justify-content: center;
   transform: translate(-50%, -50%);
+  flex-direction: column;
 }
 
 .menu.active {
   display: flex;
-  flex-direction: column;
 }
 
 #menuBg {
