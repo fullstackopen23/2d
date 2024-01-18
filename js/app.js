@@ -64,7 +64,9 @@ let storage = {
 }
 let lasttime = 0
 if (localStorage.getItem('highscore')) {
-  storage.highscore = JSON.parse(localStorage.getItem('highscore'))
+  storage.highscore = Number(
+    JSON.parse(localStorage.getItem('highscore'))
+  )
   highScoreText.innerHTML =
     'Your Highscore: ' + storage.highscore + 's'
 }

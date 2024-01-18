@@ -320,6 +320,23 @@ export default class Player {
         break
       }
     }
+    for (let i = 0; i < tiles.length; i++) {
+      const tile = tiles[i]
+      if (collides(horizontalRext, tile)) {
+        if (this.vx > 0) {
+          //console.log('collides on the right')
+          const offset =
+            this.x + this.width - this.hitbox.x - this.hitbox.width
+          this.x = tile.x - this.width + offset - 0.02
+        } else if (this.vx < 0) {
+          //console.log('collides on the left ')
+          const offset = this.hitbox.x - this.x
+          this.x = tile.x + tile.width - offset + 0.02
+        }
+        this.vx = 0
+        break
+      }
+    }
 
     tiles.forEach((tile) => {
       if (collides(horizontalRext, tile)) {

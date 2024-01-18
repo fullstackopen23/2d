@@ -202,7 +202,7 @@ header p {
 }
 
 .canvasContainer #canvas {
-  background-image: url('./img/bg.png');
+  background-image: url('./img/bg1.png');
   background-size: cover;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   background-position: center;
