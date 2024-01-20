@@ -42,11 +42,11 @@ function resize() {
   } else if (window.innerWidth < 550) {
     scale = 1
   } else if (window.innerWidth < 750) {
-    scale = 1.5
+    scale = 1.3
   } else if (window.innerWidth < 950) {
-    scale = 1.7
+    scale = 1.5
   } else {
-    scale = 1.8
+    scale = 1.6
   }
   canvas.width = 320 * scale
   canvas.height = 320 * scale
